@@ -1,9 +1,8 @@
-﻿namespace GeoJSON.Net.Tests.Feature
+﻿namespace GeoJSON.Net.Tests.Feature;
+
+internal enum TestFeatureEnum
 {
-    internal enum TestFeatureEnum
-    {
-        Undefined,
-        Value1,
-        Value2
-    }
+    Undefined,
+    Value1,
+    Value2
 }

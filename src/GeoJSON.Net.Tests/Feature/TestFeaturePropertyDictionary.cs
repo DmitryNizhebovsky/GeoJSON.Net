@@ -1,229 +1,228 @@
-﻿namespace GeoJSON.Net.Tests.Feature
+﻿namespace GeoJSON.Net.Tests.Feature;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+/// <summary>
+/// The Test Property Dictionary object.
+/// </summary>
+internal class TestFeaturePropertyDictionary : IDictionary<string, object>
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
+    /// <summary>
+    /// The internal dictionary this implementation is wrapping for testing purposes.
+    /// </summary>
+    private readonly IDictionary<string, object> internalDictionary;
 
     /// <summary>
-    /// The Test Property Dictionary object.
+    /// Initializes a new instance of the <see cref="TestFeaturePropertyDictionary"/> class.
     /// </summary>
-    internal class TestFeaturePropertyDictionary : IDictionary<string, object>
+    public TestFeaturePropertyDictionary()
     {
-        /// <summary>
-        /// The internal dictionary this implementation is wrapping for testing purposes.
-        /// </summary>
-        private readonly IDictionary<string, object> internalDictionary;
+        internalDictionary = new Dictionary<string, object>();
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TestFeaturePropertyDictionary"/> class.
-        /// </summary>
-        public TestFeaturePropertyDictionary()
+    public bool BooleanProperty
+    {
+        get
         {
-            this.internalDictionary = new Dictionary<string, object>();
+            return GetKeyOrDefault<bool>(nameof(BooleanProperty));
         }
 
-        public bool BooleanProperty
+        set
         {
-            get
-            {
-                return GetKeyOrDefault<bool>(nameof(BooleanProperty));
-            }
+            internalDictionary[nameof(BooleanProperty)] = value;
+        }
+    }
 
-            set
-            {
-                internalDictionary[nameof(BooleanProperty)] = value;
-            }
+    public DateTime DateTimeProperty
+    {
+        get
+        {
+            return GetKeyOrDefault<DateTime>(nameof(DateTimeProperty));
         }
 
-        public DateTime DateTimeProperty
+        set
         {
-            get
-            {
-                return GetKeyOrDefault<DateTime>(nameof(DateTimeProperty));
-            }
+            internalDictionary[nameof(DateTimeProperty)] = value;
+        }
+    }
 
-            set
-            {
-                internalDictionary[nameof(DateTimeProperty)] = value;
-            }
+    public double DoubleProperty
+    {
+        get
+        {
+            return GetKeyOrDefault<double>(nameof(DoubleProperty));
         }
 
-        public double DoubleProperty
+        set
         {
-            get
-            {
-                return GetKeyOrDefault<double>(nameof(DoubleProperty));
-            }
+            internalDictionary[nameof(DoubleProperty)] = value;
+        }
+    }
 
-            set
-            {
-                internalDictionary[nameof(DoubleProperty)] = value;
-            }
+    public TestFeatureEnum EnumProperty
+    {
+        get
+        {
+            return GetKeyOrDefault<TestFeatureEnum>(nameof(EnumProperty));
         }
 
-        public TestFeatureEnum EnumProperty
+        set
         {
-            get
-            {
-                return GetKeyOrDefault<TestFeatureEnum>(nameof(EnumProperty));
-            }
+            internalDictionary[nameof(EnumProperty)] = value;
+        }
+    }
 
-            set
-            {
-                internalDictionary[nameof(EnumProperty)] = value;
-            }
+    public int IntProperty
+    {
+        get
+        {
+            return GetKeyOrDefault<int>(nameof(IntProperty));
         }
 
-        public int IntProperty
+        set
         {
-            get
-            {
-                return GetKeyOrDefault<int>(nameof(IntProperty));
-            }
+            internalDictionary[nameof(IntProperty)] = value;
+        }
+    }
 
-            set
-            {
-                internalDictionary[nameof(IntProperty)] = value;
-            }
+    public string StringProperty
+    {
+        get
+        {
+            return GetKeyOrDefault<string>(nameof(StringProperty));
         }
 
-        public string StringProperty
+        set
         {
-            get
-            {
-                return GetKeyOrDefault<string>(nameof(StringProperty));
-            }
+            internalDictionary[nameof(StringProperty)] = value;
+        }
+    }
 
-            set
-            {
-                internalDictionary[nameof(StringProperty)] = value;
-            }
+    /// <inheritdoc/>
+    public int Count
+    {
+        get
+        {
+            return internalDictionary.Count;
+        }
+    }
+
+    /// <inheritdoc/>
+    public bool IsReadOnly
+    {
+        get
+        {
+            return internalDictionary.IsReadOnly;
+        }
+    }
+
+    /// <inheritdoc/>
+    public ICollection<string> Keys
+    {
+        get
+        {
+            return internalDictionary.Keys;
+        }
+    }
+
+    /// <inheritdoc/>
+    public ICollection<object> Values
+    {
+        get
+        {
+            return internalDictionary.Values;
+        }
+    }
+
+    /// <inheritdoc/>
+    public object this[string key]
+    {
+        get
+        {
+            return internalDictionary[key];
         }
 
-        /// <inheritdoc/>
-        public int Count
+        set
         {
-            get
-            {
-                return internalDictionary.Count;
-            }
+            internalDictionary[key] = value;
+        }
+    }
+
+    /// <inheritdoc/>
+    public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+    {
+        return internalDictionary.GetEnumerator();
+    }
+
+    /// <inheritdoc/>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    /// <inheritdoc/>
+    public void Add(KeyValuePair<string, object> item)
+    {
+        internalDictionary.Add(item);
+    }
+
+    /// <inheritdoc/>
+    public void Clear()
+    {
+        internalDictionary.Clear();
+    }
+
+    /// <inheritdoc/>
+    public bool Contains(KeyValuePair<string, object> item)
+    {
+        return internalDictionary.Contains(item);
+    }
+
+    /// <inheritdoc/>
+    public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
+    {
+        internalDictionary.CopyTo(array, arrayIndex);
+    }
+
+    /// <inheritdoc/>
+    public bool Remove(KeyValuePair<string, object> item)
+    {
+        return internalDictionary.Remove(item);
+    }
+
+    /// <inheritdoc/>
+    public bool ContainsKey(string key)
+    {
+        return internalDictionary.ContainsKey(key);
+    }
+
+    /// <inheritdoc/>
+    public void Add(string key, object value)
+    {
+        internalDictionary.Add(key, value);
+    }
+
+    /// <inheritdoc/>
+    public bool Remove(string key)
+    {
+        return internalDictionary.Remove(key);
+    }
+
+    /// <inheritdoc/>
+    public bool TryGetValue(string key, out object value)
+    {
+        return internalDictionary.TryGetValue(key, out value);
+    }
+
+    private T GetKeyOrDefault<T>(string keyName)
+    {
+        if (TryGetValue(keyName, out object value))
+        {
+            return (T)value;
         }
 
-        /// <inheritdoc/>
-        public bool IsReadOnly
-        {
-            get
-            {
-                return internalDictionary.IsReadOnly;
-            }
-        }
-
-        /// <inheritdoc/>
-        public ICollection<string> Keys
-        {
-            get
-            {
-                return internalDictionary.Keys;
-            }
-        }
-
-        /// <inheritdoc/>
-        public ICollection<object> Values
-        {
-            get
-            {
-                return internalDictionary.Values;
-            }
-        }
-
-        /// <inheritdoc/>
-        public object this[string key]
-        {
-            get
-            {
-                return internalDictionary[key];
-            }
-
-            set
-            {
-                internalDictionary[key] = value;
-            }
-        }
-
-        /// <inheritdoc/>
-        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
-        {
-            return internalDictionary.GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        public void Add(KeyValuePair<string, object> item)
-        {
-            internalDictionary.Add(item);
-        }
-
-        /// <inheritdoc/>
-        public void Clear()
-        {
-            internalDictionary.Clear();
-        }
-
-        /// <inheritdoc/>
-        public bool Contains(KeyValuePair<string, object> item)
-        {
-            return internalDictionary.Contains(item);
-        }
-
-        /// <inheritdoc/>
-        public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
-        {
-            internalDictionary.CopyTo(array, arrayIndex);
-        }
-
-        /// <inheritdoc/>
-        public bool Remove(KeyValuePair<string, object> item)
-        {
-            return internalDictionary.Remove(item);
-        }
-
-        /// <inheritdoc/>
-        public bool ContainsKey(string key)
-        {
-            return internalDictionary.ContainsKey(key);
-        }
-
-        /// <inheritdoc/>
-        public void Add(string key, object value)
-        {
-            internalDictionary.Add(key, value);
-        }
-
-        /// <inheritdoc/>
-        public bool Remove(string key)
-        {
-            return internalDictionary.Remove(key);
-        }
-
-        /// <inheritdoc/>
-        public bool TryGetValue(string key, out object value)
-        {
-            return internalDictionary.TryGetValue(key, out value);
-        }
-
-        private T GetKeyOrDefault<T>(string keyName)
-        {
-            if (TryGetValue(keyName, out object value))
-            {
-                return (T)value;
-            }
-
-            return default;
-        }
+        return default;
     }
 }

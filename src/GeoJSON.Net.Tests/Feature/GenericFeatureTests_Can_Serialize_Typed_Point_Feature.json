@@ -7,6 +7,10 @@
     "name": "no name here",
     "value": 1.337
   },
+  "options": {
+    "fill": true,
+    "fillColor": "#FF00FF"
+  },
   "id": "no id there",
   "type": "Feature"
 }

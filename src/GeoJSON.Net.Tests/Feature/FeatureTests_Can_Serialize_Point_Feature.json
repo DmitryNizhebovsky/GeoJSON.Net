@@ -1,8 +1,9 @@
 ﻿{
-    "geometry": {
-        "coordinates": [2.0, 1.0],
-        "type": "Point"
-    },
-    "properties": {},
-    "type": "Feature"
+  "geometry": {
+    "coordinates": [ 2.0, 1.0 ],
+    "type": "Point"
+  },
+  "properties": {},
+  "options": {},
+  "type": "Feature"
 }

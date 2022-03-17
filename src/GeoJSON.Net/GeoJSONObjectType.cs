@@ -77,5 +77,10 @@ public enum GeoJSONObjectType
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.3
     /// </remarks>
-    FeatureCollection
+    FeatureCollection,
+
+    /// <summary>
+    /// Defines the Cluster type.
+    /// </summary>
+    Cluster
 }

@@ -1,17 +1,24 @@
 ﻿{
-  "type":"Feature",
-  "geometry":{
-    "type":"Point",
-    "coordinates":[
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
       10.0,
       10.0
     ]
   },
-  "properties":{
-    "BooleanProperty":true,
-    "DoubleProperty":1.2345,
-    "EnumProperty":1,
-    "IntProperty":-1,
-    "StringProperty":"Hello, GeoJSON !"
+  "properties": {
+    "BooleanProperty": true,
+    "DoubleProperty": 1.2345,
+    "EnumProperty": 1,
+    "IntProperty": -1,
+    "StringProperty": "Hello, GeoJSON !"
+  },
+  "options": {
+    "BooleanProperty": false,
+    "DoubleProperty": 5.4321,
+    "EnumProperty": 2,
+    "IntProperty": 42,
+    "StringProperty": "Hello, YandexMap !"
   }
 }

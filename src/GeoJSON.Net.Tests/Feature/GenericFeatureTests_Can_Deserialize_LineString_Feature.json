@@ -12,5 +12,8 @@
   },
   "properties": {
     "name": "Dinagat Islands"
+  },
+  "options": {
+    "fill": true
   }
 }
