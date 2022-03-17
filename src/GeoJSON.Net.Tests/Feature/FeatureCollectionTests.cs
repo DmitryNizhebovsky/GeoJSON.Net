@@ -133,7 +133,7 @@ namespace GeoJSON.Net.Tests.Feature
         }
 
 
-        private FeatureCollection GetFeatureCollection()
+        private static FeatureCollection GetFeatureCollection()
         {
             var model = new FeatureCollection();
             for (var i = 10; i-- > 0;)
@@ -152,7 +152,7 @@ namespace GeoJSON.Net.Tests.Feature
             return model;
         }
 
-        private void Assert_Are_Equal(FeatureCollection left, FeatureCollection right)
+        private static void Assert_Are_Equal(FeatureCollection left, FeatureCollection right)
         {
             Assert.AreEqual(left, right);
 

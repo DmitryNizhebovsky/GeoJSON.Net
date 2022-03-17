@@ -36,7 +36,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
             {
                 return true;
             }
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -52,7 +52,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }
@@ -74,6 +74,5 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
         {
             return Type.GetHashCode();
         }
-
     }
 }

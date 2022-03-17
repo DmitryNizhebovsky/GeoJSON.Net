@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Feature
 {
@@ -25,12 +25,7 @@ namespace GeoJSON.Net.Feature
         /// <param name="features">The features.</param>
         public FeatureCollection(List<Feature> features)
         {
-            if (features == null)
-            {
-                throw new ArgumentNullException(nameof(features));
-            }
-
-            Features = features;
+            Features = features ?? throw new ArgumentNullException(nameof(features));
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.FeatureCollection;
@@ -81,7 +76,7 @@ namespace GeoJSON.Net.Feature
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }

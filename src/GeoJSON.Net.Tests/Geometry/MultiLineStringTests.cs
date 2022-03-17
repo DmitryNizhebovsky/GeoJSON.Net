@@ -60,7 +60,7 @@ namespace GeoJSON.Net.Tests.Geometry
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
 
-        private LineString GetLineString(double offset = 0.0)
+        private static LineString GetLineString(double offset = 0.0)
         {
             var coordinates = new List<IPosition>
             {

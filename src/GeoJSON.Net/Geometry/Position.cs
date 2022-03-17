@@ -135,7 +135,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return true;
             }
-            if (ReferenceEquals(null, right) || ReferenceEquals(null, left))
+            if (right is null || left is null)
             {
                 return false;
             }

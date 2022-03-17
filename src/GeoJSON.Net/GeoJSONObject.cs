@@ -1,13 +1,12 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.CoordinateReferenceSystem;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Collections.Generic;
-using System;
 
 namespace GeoJSON.Net
 {
@@ -17,7 +16,7 @@ namespace GeoJSON.Net
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class GeoJSONObject : IGeoJSONObject, IEqualityComparer<GeoJSONObject>, IEquatable<GeoJSONObject>
     {
-        internal static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new DoubleTenDecimalPlaceComparer();
+        internal static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new();
 
         /// <summary>
         ///     Gets or sets the (optional)
@@ -86,7 +85,7 @@ namespace GeoJSON.Net
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }
@@ -101,8 +100,8 @@ namespace GeoJSON.Net
                 return false;
             }
 
-            var leftIsNull = ReferenceEquals(null, left.BoundingBoxes);
-            var rightIsNull = ReferenceEquals(null, right.BoundingBoxes);
+            var leftIsNull = left.BoundingBoxes is null;
+            var rightIsNull = right.BoundingBoxes is null;
             var bothAreMissing = leftIsNull && rightIsNull;
 
             if (bothAreMissing || leftIsNull != rightIsNull)
@@ -122,7 +121,7 @@ namespace GeoJSON.Net
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }

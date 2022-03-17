@@ -1,11 +1,11 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using GeoJSON.Net.Converters;
+using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -23,7 +23,7 @@ namespace GeoJSON.Net.Geometry
         /// <param name="coordinates">The coordinates.</param>
         public MultiPoint(IEnumerable<Point> coordinates)
         {
-            Coordinates = new ReadOnlyCollection<Point>(coordinates?.ToArray() ?? new Point[0]);
+            Coordinates = new ReadOnlyCollection<Point>(coordinates?.ToArray() ?? Array.Empty<Point>());
         }
         
         [JsonConstructor]
@@ -81,7 +81,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }

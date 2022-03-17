@@ -1,15 +1,15 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
-using System;
-using System.Collections.ObjectModel;
 
 namespace GeoJSON.Net.Geometry
 {
-    
+
     /// <summary>
     /// Defines the MultiLineString type.
     /// </summary>
@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Geometry
         public MultiLineString(IEnumerable<LineString> coordinates)
         {
             Coordinates =new ReadOnlyCollection<LineString>(
-                coordinates?.ToArray() ?? new LineString[0]);
+                coordinates?.ToArray() ?? Array.Empty<LineString>());
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }

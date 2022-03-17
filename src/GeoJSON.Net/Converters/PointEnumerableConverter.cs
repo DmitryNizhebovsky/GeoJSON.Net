@@ -14,7 +14,7 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class PointEnumerableConverter : JsonConverter
     {
-        private static readonly PositionConverter PositionConverter = new PositionConverter();
+        private static readonly PositionConverter PositionConverter = new();
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {

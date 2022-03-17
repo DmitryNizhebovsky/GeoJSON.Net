@@ -1,14 +1,12 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using System;
 using System.Collections.Generic;
-#if (!NET35 || !NET40)
-using System.Reflection;
 using System.Linq;
-#endif
+using System.Reflection;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
-using System;
 
 namespace GeoJSON.Net.Feature
 {
@@ -56,7 +54,7 @@ namespace GeoJSON.Net.Feature
         /// <returns></returns>
         public bool Equals(Feature<TGeometry, TProps> other)
         {
-            if (ReferenceEquals(null, other)) return false;
+            if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
             return base.Equals(other)
                    && string.Equals(Id, other.Id)
@@ -66,7 +64,7 @@ namespace GeoJSON.Net.Feature
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
             return Equals((Feature<TGeometry, TProps>) obj);
@@ -157,22 +155,16 @@ namespace GeoJSON.Net.Feature
             {
                 return new Dictionary<string, object>();
             }
-#if(NET35 || NET40)
-            return properties.GetType().GetProperties()
-                .Where(propertyInfo => propertyInfo.GetGetMethod().IsPublic)
-                .ToDictionary(propertyInfo => propertyInfo.Name,
-                    propertyInfo => propertyInfo.GetValue(properties, null));
-#else
+
             return properties.GetType().GetTypeInfo().DeclaredProperties
                 .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
                 .ToDictionary(propertyInfo => propertyInfo.Name,
                     propertyInfo => propertyInfo.GetValue(properties, null));
-#endif
         }
 
         public bool Equals(Feature<TGeometry> other)
         {
-            if (ReferenceEquals(null, other)) return false;
+            if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             if (Geometry == null && other.Geometry == null)
@@ -195,7 +187,7 @@ namespace GeoJSON.Net.Feature
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             return obj.GetType() == GetType() && Equals((Feature<TGeometry>) obj);
         }
@@ -207,12 +199,12 @@ namespace GeoJSON.Net.Feature
 
         public static bool operator ==(Feature<TGeometry> left, Feature<TGeometry> right)
         {
-            return left?.Equals(right) ?? ReferenceEquals(null, right);
+            return left?.Equals(right) ?? right is null;
         }
 
         public static bool operator !=(Feature<TGeometry> left, Feature<TGeometry> right)
         {
-            return !(left?.Equals(right) ?? ReferenceEquals(null, right));
+            return !(left?.Equals(right) ?? right is null);
         }
     }
 }

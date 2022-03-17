@@ -1,9 +1,9 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
+using System.Collections.Generic;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -74,7 +74,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }
@@ -94,9 +94,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         public override int GetHashCode()
         {
-            int hash = base.GetHashCode();
-            hash = (hash * 397) ^ Coordinates.GetHashCode();
-            return hash;
+            return HashCode.Combine(base.GetHashCode(), Coordinates);
         }
 
         /// <summary>

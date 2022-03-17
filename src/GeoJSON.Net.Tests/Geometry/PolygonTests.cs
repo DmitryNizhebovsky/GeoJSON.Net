@@ -292,12 +292,6 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Equals_GetHashCode_Contract()
         {
-            //var rnd = new System.Random();
-            //var offset = rnd.NextDouble() * 60;
-            //if (rnd.NextDouble() < 0.5)
-            //{
-            //    offset *= -1;
-            //}
             double offset = 0d;
 
             var left = GetPolygon(offset);
@@ -316,9 +310,8 @@ namespace GeoJSON.Net.Tests.Geometry
 
             Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
         }
-
         
-        private Polygon GetPolygon(double offset = 0.0)
+        private static Polygon GetPolygon(double offset = 0.0)
         {
             var polygon = new Polygon(new List<LineString>
             {

@@ -30,13 +30,12 @@ namespace GeoJSON.Net.Geometry
         {
             Coordinates = new ReadOnlyCollection<LineString>(
                 coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates)));
+
             if (Coordinates.Any(linearRing => !linearRing.IsLinearRing()))
             {
                 throw new ArgumentException("All elements must be closed LineStrings with 4 or more positions" +
                                             " (see GeoJSON spec at 'https://tools.ietf.org/html/rfc7946#section-3.1.6').", nameof(coordinates));
             }
-
-            
         }
 
         /// <summary>
@@ -98,7 +97,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }

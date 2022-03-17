@@ -26,7 +26,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IGeometryObject).IsAssignableFromType(objectType);
+            return typeof(IGeometryObject).IsAssignableFrom(objectType);
         }
 
         /// <summary>
@@ -85,52 +85,27 @@ namespace GeoJSON.Net.Converters
         /// </exception>
         private static IGeometryObject ReadGeoJson(JObject value)
         {
-            JToken token;
-
-            if (!value.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out token))
+            if (!value.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out JToken token))
             {
                 throw new JsonReaderException("json must contain a \"type\" property");
             }
 
-            GeoJSONObjectType geoJsonType;
-
-#if (NET35)
-            try
-            {
-                geoJsonType = (GeoJSONObjectType)Enum.Parse(typeof(GeoJSONObjectType), token.Value<string>(), true);
-            }
-            catch (Exception)
-            {
-                throw new JsonReaderException("Type must be a valid geojson object type");
-            }
-#else
-            if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
+            if (!Enum.TryParse(token.Value<string>(), true, out GeoJSONObjectType geoJsonType))
             {
                 throw new JsonReaderException("type must be a valid geojson geometry object type");
             }
-#endif
 
-            switch (geoJsonType)
+            return geoJsonType switch
             {
-                case GeoJSONObjectType.Point:
-                    return value.ToObject<Point>();
-                case GeoJSONObjectType.MultiPoint:
-                    return value.ToObject<MultiPoint>();
-                case GeoJSONObjectType.LineString:
-                    return value.ToObject<LineString>();
-                case GeoJSONObjectType.MultiLineString:
-                    return value.ToObject<MultiLineString>();
-                case GeoJSONObjectType.Polygon:
-                    return value.ToObject<Polygon>();
-                case GeoJSONObjectType.MultiPolygon:
-                    return value.ToObject<MultiPolygon>();
-                case GeoJSONObjectType.GeometryCollection:
-                    return value.ToObject<GeometryCollection>();
-                case GeoJSONObjectType.Feature:
-                case GeoJSONObjectType.FeatureCollection:
-                default:
-                    throw new NotSupportedException("Feature and FeatureCollection types are Feature objects and not Geometry objects");
-            }
+                GeoJSONObjectType.Point => value.ToObject<Point>(),
+                GeoJSONObjectType.MultiPoint => value.ToObject<MultiPoint>(),
+                GeoJSONObjectType.LineString => value.ToObject<LineString>(),
+                GeoJSONObjectType.MultiLineString => value.ToObject<MultiLineString>(),
+                GeoJSONObjectType.Polygon => value.ToObject<Polygon>(),
+                GeoJSONObjectType.MultiPolygon => value.ToObject<MultiPolygon>(),
+                GeoJSONObjectType.GeometryCollection => value.ToObject<GeometryCollection>(),
+                _ => throw new NotSupportedException("Feature and FeatureCollection types are Feature objects and not Geometry objects")
+            };
         }
     }
 }

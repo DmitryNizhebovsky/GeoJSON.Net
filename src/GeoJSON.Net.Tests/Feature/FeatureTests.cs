@@ -1,9 +1,9 @@
-using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GeoJSON.Net.Geometry;
+using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests.Feature
 {
@@ -182,7 +182,7 @@ namespace GeoJSON.Net.Tests.Feature
 
             Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties);
 
-            var expectedJson = this.GetExpectedJson();
+            var expectedJson = GetExpectedJson();
             var actualJson = JsonConvert.SerializeObject(feature);
 
             Assert.False(string.IsNullOrEmpty(expectedJson));
@@ -461,7 +461,7 @@ namespace GeoJSON.Net.Tests.Feature
         }
 
 
-        private IGeometryObject GetGeometry()
+        private static IGeometryObject GetGeometry()
         {
             var coordinates = new List<LineString>
             {
@@ -499,13 +499,13 @@ namespace GeoJSON.Net.Tests.Feature
             var randomlyOrderedKeys = properties.Keys.Select(k => Guid.NewGuid() + k).OrderBy(k => k).ToList();
             foreach (var key in randomlyOrderedKeys)
             {
-                var theKey = key.Substring(36);
+                var theKey = key[36..];
                 randomlyOrdered.Add(theKey, properties[theKey]);
             }
             return randomlyOrdered;
         }
 
-        private void Assert_Are_Equal(Net.Feature.Feature left, Net.Feature.Feature right)
+        private static void Assert_Are_Equal(Net.Feature.Feature left, Net.Feature.Feature right)
         {
             Assert.AreEqual(left, right);
 
@@ -524,7 +524,7 @@ namespace GeoJSON.Net.Tests.Feature
             Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
         }
 
-        private void Assert_Are_Not_Equal(Net.Feature.Feature left, Net.Feature.Feature right)
+        private static void Assert_Are_Not_Equal(Net.Feature.Feature left, Net.Feature.Feature right)
         {
             Assert.AreNotEqual(left, right);
 

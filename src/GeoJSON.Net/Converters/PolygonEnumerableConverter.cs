@@ -14,8 +14,7 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class PolygonEnumerableConverter : JsonConverter
     {
-        
-        private static readonly LineStringEnumerableConverter PolygonConverter = new LineStringEnumerableConverter();
+        private static readonly LineStringEnumerableConverter PolygonConverter = new();
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
         /// </summary>

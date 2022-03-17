@@ -14,7 +14,7 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class PositionEnumerableConverter : JsonConverter
     {
-        private static readonly PositionConverter PositionConverter = new PositionConverter();
+        private static readonly PositionConverter PositionConverter = new();
         
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IEnumerable<IPosition>).IsAssignableFromType(objectType);
+            return typeof(IEnumerable<IPosition>).IsAssignableFrom(objectType);
         }
 
         /// <summary>

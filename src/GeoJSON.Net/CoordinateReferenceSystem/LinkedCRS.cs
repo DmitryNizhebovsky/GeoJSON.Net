@@ -31,8 +31,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
                 throw new ArgumentNullException(nameof(href));
             }
 
-            Uri uri;
-            if (href.Length == 0 || !Uri.TryCreate(href, UriKind.RelativeOrAbsolute, out uri))
+            if (href.Length == 0 || !Uri.TryCreate(href, UriKind.RelativeOrAbsolute, out _))
             {
                 throw new ArgumentException("must be a dereferenceable URI", nameof(href));
             }
@@ -56,7 +55,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
         /// <param name="type">
         /// The optional type member will be put in the properties Dictionary
         /// </param>
-        public LinkedCRS(Uri href, string type = "") : this(href != null ? href.ToString() : null, type)
+        public LinkedCRS(Uri href, string type = "") : this(href?.ToString(), type)
         {
         }
     }

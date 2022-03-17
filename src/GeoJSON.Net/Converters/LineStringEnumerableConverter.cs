@@ -14,7 +14,7 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class LineStringEnumerableConverter : JsonConverter
     {
-        private static readonly PositionEnumerableConverter LineStringConverter = new PositionEnumerableConverter();
+        private static readonly PositionEnumerableConverter LineStringConverter = new();
 
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IEnumerable<LineString>).IsAssignableFromType(objectType);
+            return typeof(IEnumerable<LineString>).IsAssignableFrom(objectType);
         }
 
         /// <summary>

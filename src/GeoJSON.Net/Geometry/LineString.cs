@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Geometry
         [JsonConstructor]
         public LineString(IEnumerable<IEnumerable<double>> coordinates)
         : this(coordinates?.Select(latLongAlt => (IPosition)latLongAlt.ToPosition())
-               ?? throw new ArgumentException(nameof(coordinates)))
+               ?? throw new ArgumentException(null, nameof(coordinates)))
         {
         }
 
@@ -64,7 +64,7 @@ namespace GeoJSON.Net.Geometry
         public bool IsClosed()
         {
             var firstCoordinate = Coordinates[0];
-            var lastCoordinate = Coordinates[Coordinates.Count - 1];
+            var lastCoordinate = Coordinates[^1];
 
             return firstCoordinate.Longitude.Equals(lastCoordinate.Longitude)
                    && firstCoordinate.Latitude.Equals(lastCoordinate.Latitude)
@@ -124,7 +124,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }

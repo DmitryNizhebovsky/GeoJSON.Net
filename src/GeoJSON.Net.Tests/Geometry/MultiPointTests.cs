@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -43,7 +44,7 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.AreEqual(expectedMultiPoint, actualMultiPoint);
         }
 
-        private List<Point> GetPoints(double offset)
+        private static List<Point> GetPoints(double offset)
         {
             var points = new List<Point>
             {
@@ -58,7 +59,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Equals_GetHashCode_Contract()
         {
-            var rnd = new System.Random();
+            var rnd = new Random();
             var offset = rnd.NextDouble() * 60;
             if (rnd.NextDouble() < 0.5)
             {

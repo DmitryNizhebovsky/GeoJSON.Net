@@ -53,7 +53,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }
@@ -63,8 +63,8 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
                 return false;
             }
 
-            var leftIsNull = ReferenceEquals(null, left.Properties);
-            var rightIsNull = ReferenceEquals(null, right.Properties);
+            var leftIsNull = left.Properties is null;
+            var rightIsNull = right.Properties is null;
             var bothAreMissing = leftIsNull && rightIsNull;
 
             if (bothAreMissing || leftIsNull != rightIsNull)
@@ -96,7 +96,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (right is null)
             {
                 return false;
             }
