@@ -49,7 +49,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     /// <returns>A <see cref="BoundingBox"/> equivalent to the bounding box contained in <paramref name="wkt"/>.</returns>
     public static BoundingBox Parse(BoundingBoxType bboxType, CoordinatesFormat coordinatesFormat, string wkt)
     {
-        var coordinates = ParseBBoxString(wkt);
+        var coordinates = ParseWktString(wkt);
         return BuildBoundingBox(bboxType, coordinatesFormat, coordinates);
     }
 
@@ -71,7 +71,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     {
         result = null;
 
-        if (!TryParseBBoxString(wkt, out double[] coordinates))
+        if (!TryParseWktString(wkt, out double[] coordinates))
             return false;
 
         result = BuildBoundingBox(bboxType, coordinatesFormat, coordinates);
@@ -196,7 +196,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
         return result;
     }
 
-    private static bool TryParseBBoxString(string wkt, out double[] result)
+    private static bool TryParseWktString(string wkt, out double[] result)
     {
         result = Array.Empty<double>();
 
@@ -221,7 +221,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
         return true;
     }
 
-    private static double[] ParseBBoxString(string wkt)
+    private static double[] ParseWktString(string wkt)
     {
         if (string.IsNullOrEmpty(wkt))
             throw new ArgumentNullException("wkt string empty or null");
