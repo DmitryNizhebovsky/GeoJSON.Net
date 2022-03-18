@@ -12,7 +12,7 @@ namespace GeoJSON.Net.Geometry;
 /// </summary>
 public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Position>
 {
-    private static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new DoubleTenDecimalPlaceComparer();
+    private static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Position" /> class.
@@ -85,7 +85,9 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// Gets the longitude or X coordinate
     /// </summary>
     public double Longitude { get; }
-    
+
+    public static readonly Position Zero = new(0.0d, 0.0d, 0.0d);
+
     /// <summary>
     /// Returns a <see cref="string" /> that represents this instance.
     /// </summary>
@@ -106,7 +108,7 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// </summary>
     public override bool Equals(object obj)
     {
-        return (this == (obj as Position));
+        return this == (obj as Position);
     }
 
     /// <summary>
@@ -114,7 +116,7 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// </summary>
     public bool Equals(Position other)
     {
-        return (this == other);
+        return this == other;
     }
 
     /// <summary>
@@ -122,9 +124,8 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// </summary>
     public bool Equals(Position left, Position right)
     {
-        return (left == right);
+        return left == right;
     }
-
 
     /// <summary>
     /// Determines whether the specified object instances are considered equal
