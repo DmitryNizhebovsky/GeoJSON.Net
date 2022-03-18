@@ -26,7 +26,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     public BoundingBoxType BoundingBoxType { get; }
 
     /// <summary>
-    /// 
+    /// Initializes a new instance of the <see cref="BoundingBox" /> class.
     /// </summary>
     /// <param name="rightCorner">Bottom right or top right corner.</param>
     /// <param name="leftCorner">Bottom left or top left corner.</param>
