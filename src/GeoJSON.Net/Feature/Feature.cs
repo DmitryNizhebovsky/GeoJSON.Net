@@ -65,7 +65,8 @@ public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IEquatable<Fe
         return base.Equals(other)
                && string.Equals(Id, other.Id)
                && EqualityComparer<TGeometry>.Default.Equals(Geometry, other.Geometry)
-               && EqualityComparer<TProps>.Default.Equals(Properties, other.Properties);
+               && EqualityComparer<TProps>.Default.Equals(Properties, other.Properties)
+               && EqualityComparer<TOptions>.Default.Equals(Options, other.Options);
     }
 
     public override bool Equals(object obj)
@@ -116,7 +117,7 @@ public class Feature : Feature<IGeometryObject>
     {
     }
 
-    public Feature(IGeometryObject geometry, object properties, IDictionary<string, object> options = null, string id = null) 
+    public Feature(IGeometryObject geometry, object properties, object options, string id = null) 
         : base(geometry, properties, options, id)
     {
     }

@@ -216,11 +216,25 @@ public class FeatureTests : TestBase
             StringProperty = "Hello, GeoJSON !"
         };
 
-        Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties);
+        var options = new TestFeatureProperty()
+        {
+            BooleanProperty = false,
+            DateTimeProperty = DateTime.Now,
+            DoubleProperty = 5.4321d,
+            EnumProperty = TestFeatureEnum.Value2,
+            IntProperty = 42,
+            StringProperty = "Hello, YandexMap !"
+        };
+
+        Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties, options);
 
         Assert.IsNotNull(feature.Properties);
         Assert.IsTrue(feature.Properties.Count > 1);
         Assert.AreEqual(feature.Properties.Count, 6);
+
+        Assert.IsNotNull(feature.Options);
+        Assert.IsTrue(feature.Options.Count > 1);
+        Assert.AreEqual(feature.Options.Count, 6);
     }
 
     [Test]
@@ -251,7 +265,7 @@ public class FeatureTests : TestBase
     [Test]
     public void Ctor_Creates_Properties_Collection_When_Passed_Null_Proper_Object()
     {
-        Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), (object)null);
+        Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), null, null);
 
         Assert.IsNotNull(feature.Properties);
         CollectionAssert.IsEmpty(feature.Properties);
@@ -272,7 +286,17 @@ public class FeatureTests : TestBase
             DoubleProperty = 1.2345d
         };
 
-        var left = new Net.Feature.Feature(new Point(new Position(10, 10)), leftProp);
+        var leftOptions = new TestFeatureProperty()
+        {
+            BooleanProperty = false,
+            DoubleProperty = 5.4321d,
+            EnumProperty = TestFeatureEnum.Value2,
+            IntProperty = 42,
+            StringProperty = "Hello, YandexMap !",
+            DateTimeProperty = DateTime.Now
+        };
+
+        var left = new Net.Feature.Feature(new Point(new Position(10, 10)), leftProp, leftOptions);
 
         var rightProp = new TestFeatureProperty
         {
@@ -284,7 +308,17 @@ public class FeatureTests : TestBase
             StringProperty = "Hello, GeoJSON !"
         };
 
-        var right = new Net.Feature.Feature(new Point(new Position(10, 10)), rightProp);
+        var rightOptions = new TestFeatureProperty()
+        {
+            DateTimeProperty = DateTime.Now,
+            StringProperty = "Hello, YandexMap !",
+            IntProperty = 42,
+            EnumProperty = TestFeatureEnum.Value2,
+            DoubleProperty = 5.4321d,
+            BooleanProperty = false
+        };
+
+        var right = new Net.Feature.Feature(new Point(new Position(10, 10)), rightProp, rightOptions);
 
         Assert_Are_Equal(left, right);
     }
