@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
 
 namespace GeoJSON.Net.Geometry;
 
@@ -208,14 +207,15 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
         if (strValues.Length != 4)
             return false;
 
-        var values = strValues
-            .Select(s => double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out double n) ? n : (double?)null)
-            .Where(n => n.HasValue)
-            .Select(n => n.Value)
-            .ToArray();
+        var values = new double[4];
 
-        if (values.Length != 4)
-            return false;
+        for (int i = 0; i < strValues.Length; ++i)
+        {
+            if (double.TryParse(strValues[i], NumberStyles.Float, CultureInfo.InvariantCulture, out double n))
+                values[i] = n;
+            else
+                return false;
+        }
 
         result = values;
         return true;
@@ -231,14 +231,12 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
         if (strValues.Length != 4)
             throw new FormatException("Invalid format of wkt string. Example: 37.283478,55.660739,37.936821,55.847952");
 
-        var values = strValues
-            .Select(s => double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out double n) ? n : (double?)null)
-            .Where(n => n.HasValue)
-            .Select(n => n.Value)
-            .ToArray();
+        var values = new double[4];
 
-        if (values.Length != 4)
-            throw new FormatException("Invalid format of wkt string. Example: 37.283478,55.660739,37.936821,55.847952");
+        for (int i = 0; i < strValues.Length; ++i)
+        {
+            values[i] = double.Parse(strValues[i], NumberStyles.Float, CultureInfo.InvariantCulture);
+        }
 
         return values;
     }
