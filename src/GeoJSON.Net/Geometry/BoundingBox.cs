@@ -161,32 +161,32 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
 
     private static BoundingBox BuildBoundingBox(BoundingBoxType bboxType, CoordinatesFormat coordinatesFormat, double[] coordinates)
     {
-        var result = new BoundingBox(BoundingBoxType.FromBottomLeftTopRight, Position.Zero, Position.Zero);
-        var firsts = Position.Zero;
-        var seconds = Position.Zero;
+        BoundingBox result = null;
+        Position first = Position.Zero;
+        Position second = Position.Zero;
 
         switch (coordinatesFormat)
         {
             case CoordinatesFormat.LatitudeLongitude:
-                firsts = new Position(coordinates[0], coordinates[1]);
-                seconds = new Position(coordinates[2], coordinates[3]);
+                first = new Position(coordinates[0], coordinates[1]);
+                second = new Position(coordinates[2], coordinates[3]);
                 break;
 
             case CoordinatesFormat.LongitudeLatitude:
-                firsts = new Position(coordinates[1], coordinates[0]);
-                seconds = new Position(coordinates[3], coordinates[2]);
+                first = new Position(coordinates[1], coordinates[0]);
+                second = new Position(coordinates[3], coordinates[2]);
                 break;
         }
 
         switch (bboxType)
         {
             case BoundingBoxType.FromTopLeftBottomRight:
-                result = new BoundingBox(bboxType, firsts, seconds);
+                result = new BoundingBox(bboxType, first, second);
                 break;
 
             case BoundingBoxType.FromBottomLeftTopRight:
-                var topLeft = new Position(seconds.Latitude, firsts.Longitude);
-                var bottomRight = new Position(firsts.Latitude, seconds.Longitude);
+                var topLeft = new Position(second.Latitude, first.Longitude);
+                var bottomRight = new Position(first.Latitude, second.Longitude);
 
                 result = new BoundingBox(bboxType, topLeft, bottomRight);
                 break;
@@ -224,7 +224,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     private static double[] ParseWktString(string wkt)
     {
         if (string.IsNullOrEmpty(wkt))
-            throw new ArgumentNullException("wkt string empty or null");
+            throw new ArgumentNullException(nameof(wkt), "String empty or null");
 
         var strValues = wkt.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
@@ -234,9 +234,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
         var values = new double[4];
 
         for (int i = 0; i < strValues.Length; ++i)
-        {
             values[i] = double.Parse(strValues[i], NumberStyles.Float, CultureInfo.InvariantCulture);
-        }
 
         return values;
     }
