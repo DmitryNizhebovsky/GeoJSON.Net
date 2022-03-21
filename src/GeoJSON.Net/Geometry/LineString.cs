@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Geometry;
 /// Defines the LineString type.
 /// </summary>
 /// <remarks>
-/// See https://tools.ietf.org/html/rfc7946#section-3.1.4
+/// See <see href="https://tools.ietf.org/html/rfc7946#section-3.1.4"/>
 /// </remarks>
 [JsonObject(MemberSerialization.OptIn)]
 public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<LineString>, IEquatable<LineString>
@@ -75,7 +75,7 @@ public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<Line
     /// Determines whether this LineString is a LinearRing.
     /// </summary>
     /// <remarks>
-    /// See https://tools.ietf.org/html/rfc7946#section-3.1.1
+    /// See <see href="https://tools.ietf.org/html/rfc7946#section-3.1.1"/>
     /// </remarks>
     /// <returns>
     /// <c>true</c> if it is a linear ring; otherwise, <c>false</c>.

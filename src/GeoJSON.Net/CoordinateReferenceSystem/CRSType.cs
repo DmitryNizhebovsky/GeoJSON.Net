@@ -8,8 +8,8 @@ namespace GeoJSON.Net.CoordinateReferenceSystem;
 /// Defines the GeoJSON Coordinate Reference System Objects (CRS) types as originally defined in the geojson.org v1.0 spec
 /// </summary>
 /// <remarks>
-/// Originally defined http://geojson.org/geojson-spec.html#coordinate-reference-system-objects
-/// The current RFC removes the CRS type, but allows to be left in for backwards compatibility. See https://tools.ietf.org/html/rfc7946#section-4
+/// Originally defined <see href="http://geojson.org/geojson-spec.html#coordinate-reference-system-objects"/>
+/// The current RFC removes the CRS type, but allows to be left in for backwards compatibility. See <see href="https://tools.ietf.org/html/rfc7946#section-4"/>
 /// </remarks>
 public enum CRSType
 {

@@ -12,7 +12,7 @@ namespace GeoJSON.Net.Geometry;
 /// In geography, a point refers to a Position on a map, expressed in latitude and longitude.
 /// </summary>
 /// <remarks>
-/// See https://tools.ietf.org/html/rfc7946#section-3.1.2
+/// See <see href="https://tools.ietf.org/html/rfc7946#section-3.1.2"/>
 /// </remarks>
 public class Point : GeoJSONObject, IGeometryObject, IEqualityComparer<Point>, IEquatable<Point>
 {

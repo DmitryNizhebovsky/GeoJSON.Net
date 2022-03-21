@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Geometry;
 /// Defines the MultiPolygon type.
 /// </summary>
 /// <remarks>
-/// See https://tools.ietf.org/html/rfc7946#section-3.1.7
+/// See <see href="https://tools.ietf.org/html/rfc7946#section-3.1.7"/>
 /// </remarks>
 public class MultiPolygon : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPolygon>, IEquatable<MultiPolygon>
 {

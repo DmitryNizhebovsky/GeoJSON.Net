@@ -9,9 +9,9 @@ namespace GeoJSON.Net.CoordinateReferenceSystem;
 /// Defines the Named CRS type. 
 /// </summary>
 /// <remarks>
-/// See http://geojson.org/geojson-spec.html#named-crs
+/// See <see href="http://geojson.org/geojson-spec.html#named-crs"/>
 /// The current RFC removes the CRS type, but allows to be left in for backwards compatibility.
-/// See https://tools.ietf.org/html/rfc7946#section-4
+/// See <see href="https://tools.ietf.org/html/rfc7946#section-4"/>
 /// </remarks>
 public class NamedCRS : CRSBase, ICRSObject
 {

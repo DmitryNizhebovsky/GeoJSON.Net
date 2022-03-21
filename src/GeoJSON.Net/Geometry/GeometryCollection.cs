@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Geometry;
 /// Defines the GeometryCollection type.
 /// </summary>
 /// <remarks>
-/// See https://tools.ietf.org/html/rfc7946#section-3.1.8
+/// See <see href="https://tools.ietf.org/html/rfc7946#section-3.1.8"/>
 /// </remarks>
 public class GeometryCollection : GeoJSONObject, IGeometryObject, IEqualityComparer<GeometryCollection>, IEquatable<GeometryCollection>
 {

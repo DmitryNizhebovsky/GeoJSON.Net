@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Geometry;
 /// Defines the MultiLineString type.
 /// </summary>
 /// <remarks>
-/// See https://tools.ietf.org/html/rfc7946#section-3.1.5
+/// See <see href="https://tools.ietf.org/html/rfc7946#section-3.1.5"/>
 /// </remarks>
 public class MultiLineString : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiLineString>, IEquatable<MultiLineString>
 {

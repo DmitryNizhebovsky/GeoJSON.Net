@@ -13,7 +13,7 @@ public interface IGeometryObject
     /// 'Polygon', 'MultiPolygon', or 'GeometryCollection' types are allowed.
     /// </summary>
     /// <remarks>
-    /// See https://tools.ietf.org/html/rfc7946#section-3.1
+    /// See <see href="https://tools.ietf.org/html/rfc7946#section-3.1"/>
     /// </remarks>
     /// <value>
     /// The type of the object.

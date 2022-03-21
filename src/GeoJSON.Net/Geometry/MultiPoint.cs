@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Geometry;
 /// Contains an array of <see cref="Point" />.
 /// </summary>
 /// <remarks>
-/// See https://tools.ietf.org/html/rfc7946#section-3.1.3
+/// See <see href="https://tools.ietf.org/html/rfc7946#section-3.1.3"/>
 /// </remarks>
 public class MultiPoint : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPoint>, IEquatable<MultiPoint>
 {
