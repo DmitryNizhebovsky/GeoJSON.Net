@@ -15,7 +15,7 @@ namespace GeoJSON.Net.Feature;
 /// and <see cref="Properties"/>
 /// </summary>
 /// <remarks>
-/// See https://tools.ietf.org/html/rfc7946#section-3.2
+/// See <see href="https://tools.ietf.org/html/rfc7946#section-3.2"/>
 /// </remarks>
 public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IEquatable<Feature<TGeometry, TProps, TOptions>>
     where TGeometry : IGeometryObject
@@ -51,10 +51,8 @@ public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IEquatable<Fe
     /// </summary>
     /// <remarks>
     /// In contrast to <see cref="Feature.Equals(Feature)"/>, this implementation returns true only
-    /// if <see cref="Id"/> and <see cref="Properties"/> are also equal. See
-    /// <a href="https://github.com/GeoJSON-Net/GeoJSON.Net/issues/80">#80</a> for discussion. The rationale
-    /// here is that a user explicitly specifying the property type most probably cares about the properties
-    /// equality.
+    /// if <see cref="Id"/>, <see cref="Geometry"/>, <see cref="Properties"/> and <see cref="Options"/> are also equal.
+    /// The rationale here is that a user explicitly specifying the property type most probably cares about the properties equality.
     /// </remarks>
     /// <param name="other"></param>
     /// <returns></returns>
@@ -79,15 +77,7 @@ public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IEquatable<Fe
 
     public override int GetHashCode()
     {
-        unchecked
-        {
-            var hashCode = base.GetHashCode();
-            hashCode = (hashCode * 397) ^ (Id != null ? Id.GetHashCode() : 0);
-            hashCode = (hashCode * 397) ^ EqualityComparer<TGeometry>.Default.GetHashCode(Geometry);
-            hashCode = (hashCode * 397) ^ EqualityComparer<TProps>.Default.GetHashCode(Properties);
-            hashCode = (hashCode * 397) ^ EqualityComparer<TOptions>.Default.GetHashCode(Options);
-            return hashCode;
-        }
+        return HashCode.Combine(base.GetHashCode(), Id, Geometry, Properties, Options);
     }
 
     public static bool operator ==(Feature<TGeometry, TProps, TOptions> left, Feature<TGeometry, TProps, TOptions> right)
@@ -107,7 +97,7 @@ public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IEquatable<Fe
 /// A GeoJSON Feature Object.
 /// </summary>
 /// <remarks>
-/// See https://tools.ietf.org/html/rfc7946#section-3.2
+/// See <see href="https://tools.ietf.org/html/rfc7946#section-3.2"/>
 /// </remarks>
 public class Feature : Feature<IGeometryObject>
 {
@@ -128,7 +118,8 @@ public class Feature : Feature<IGeometryObject>
 /// </summary>
 /// <remarks>Returns correctly typed Geometry property</remarks>
 /// <typeparam name="TGeometry"></typeparam>
-public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>, IDictionary<string, object>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
+public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>, IDictionary<string, object>>, IEquatable<Feature<TGeometry>>
+    where TGeometry : IGeometryObject
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Feature" /> class.
@@ -138,7 +129,7 @@ public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>
     /// <param name="id">The (optional) identifier.</param>
     [JsonConstructor]
     public Feature(TGeometry geometry, IDictionary<string, object> properties = null, IDictionary<string, object> options = null, string id = null)
-    : base(geometry, properties ?? new Dictionary<string, object>(), options ?? new Dictionary<string, object>(), id)
+        : base(geometry, properties ?? new Dictionary<string, object>(), options ?? new Dictionary<string, object>(), id)
     {
     }
 
@@ -152,7 +143,7 @@ public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>
     /// </param>
     /// <param name="id">The (optional) identifier.</param>
     public Feature(TGeometry geometry, object properties, object options, string id = null)
-    : this(geometry, GetDictionaryOfPublicProperties(properties), GetDictionaryOfPublicProperties(options), id)
+        : this(geometry, GetDictionaryOfPublicProperties(properties), GetDictionaryOfPublicProperties(options), id)
     {
     }
 
@@ -163,10 +154,12 @@ public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>
             return new Dictionary<string, object>();
         }
 
-        return properties.GetType().GetTypeInfo().DeclaredProperties
+        return properties
+            .GetType()
+            .GetTypeInfo()
+            .DeclaredProperties
             .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
-            .ToDictionary(propertyInfo => propertyInfo.Name,
-                propertyInfo => propertyInfo.GetValue(properties, null));
+            .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties, null));
     }
 
     #region IEquatable

@@ -162,10 +162,7 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// </summary>
     public override int GetHashCode()
     {
-        var hash = 397 ^ Latitude.GetHashCode();
-        hash = (hash * 397) ^ Longitude.GetHashCode();
-        hash = (hash * 397) ^ Altitude.GetValueOrDefault().GetHashCode();
-        return hash;
+        return HashCode.Combine(Latitude, Longitude, Altitude.GetValueOrDefault());
     }
 
     /// <summary>

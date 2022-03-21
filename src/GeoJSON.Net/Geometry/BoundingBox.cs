@@ -138,13 +138,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     /// </summary>
     public override int GetHashCode()
     {
-        var hash = 397 ^ LeftCorner.Latitude.GetHashCode();
-        hash = (hash * 397) ^ LeftCorner.Longitude.GetHashCode();
-        hash = (hash * 397) ^ LeftCorner.Altitude.GetValueOrDefault().GetHashCode();
-        hash = (hash * 397) ^ RightCorner.Latitude.GetHashCode();
-        hash = (hash * 397) ^ RightCorner.Longitude.GetHashCode();
-        hash = (hash * 397) ^ RightCorner.Altitude.GetValueOrDefault().GetHashCode();
-        return hash;
+        return HashCode.Combine(LeftCorner, RightCorner, BoundingBoxType);
     }
 
     /// <summary>
