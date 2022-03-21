@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.CoordinateReferenceSystem;
 using Newtonsoft.Json;
@@ -20,24 +19,8 @@ public abstract class GeoJSONObject : IGeoJSONObject, IEqualityComparer<GeoJSONO
 
     /// <summary>
     ///     Gets or sets the (optional)
-    ///     <see cref="https://tools.ietf.org/html/rfc7946#section-5">Bounding Boxes</see>.
-    /// </summary>
-    /// <value>
-    ///     The value of <see cref="BoundingBoxes" /> must be a 2*n array where n is the number of dimensions represented in
-    ///     the
-    ///     contained geometries, with the lowest values for all axes followed by the highest values.
-    ///     The axes order of a bbox follows the axes order of geometries.
-    ///     In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference
-    ///     system of the GeoJSON object of which it is a member.
-    /// </value>
-    [JsonProperty(PropertyName = "bbox", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-    public double[] BoundingBoxes { get; set; }
-
-    /// <summary>
-    ///     Gets or sets the (optional)
-    ///     <see cref="https://tools.ietf.org/html/rfc7946#section-4">
-    ///         Coordinate Reference System
-    ///         Object.
+    ///     <see href="https://tools.ietf.org/html/rfc7946#section-4">
+    ///         Coordinate Reference System Object.
     ///     </see>
     /// </summary>
     /// <value>
@@ -51,12 +34,11 @@ public abstract class GeoJSONObject : IGeoJSONObject, IEqualityComparer<GeoJSONO
 
     /// <summary>
     ///     The (mandatory) type of the
-    ///     <see cref="https://tools.ietf.org/html/rfc7946#section-3">GeoJSON Object</see>.
+    ///     <see href="https://tools.ietf.org/html/rfc7946#section-3">GeoJSON Object</see>.
     /// </summary>
     [JsonProperty(PropertyName = "type", Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
     [JsonConverter(typeof(StringEnumConverter))]
     public abstract GeoJSONObjectType Type { get; }
-
 
     #region IEqualityComparer, IEquatable
 
@@ -85,6 +67,7 @@ public abstract class GeoJSONObject : IGeoJSONObject, IEqualityComparer<GeoJSONO
         {
             return true;
         }
+
         if (right is null)
         {
             return false;
@@ -95,21 +78,7 @@ public abstract class GeoJSONObject : IGeoJSONObject, IEqualityComparer<GeoJSONO
             return false;
         }
 
-        if (!Equals(left.CRS, right.CRS))
-        {
-            return false;
-        }
-
-        var leftIsNull = left.BoundingBoxes is null;
-        var rightIsNull = right.BoundingBoxes is null;
-        var bothAreMissing = leftIsNull && rightIsNull;
-
-        if (bothAreMissing || leftIsNull != rightIsNull)
-        {
-            return bothAreMissing;
-        }
-
-        return left.BoundingBoxes.SequenceEqual(right.BoundingBoxes, DoubleComparer);
+        return Equals(left.CRS, right.CRS);
     }
 
     /// <summary>
