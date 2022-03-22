@@ -42,10 +42,10 @@ internal class FeatureCollectionItemConverter : JsonConverter
     /// <exception cref="JsonReaderException">
     /// json must contain a "type" property
     /// or
-    /// type must be a valid geojson geometry object type
+    /// type must be a valid geojson object type
     /// </exception>
     /// <exception cref="NotSupportedException">
-    /// Feature and FeatureCollection types are Feature objects and not Geometry objects
+    /// Only Feature and Cluster types are supported
     /// </exception>
     private static IFeatureCollectionItem<IGeometryObject> ReadGeoJson(JObject value)
     {
@@ -56,14 +56,14 @@ internal class FeatureCollectionItemConverter : JsonConverter
 
         if (!Enum.TryParse(token.Value<string>(), true, out GeoJSONObjectType geoJsonType))
         {
-            throw new JsonReaderException("type must be a valid geojson geometry object type");
+            throw new JsonReaderException("type must be a valid geojson object type");
         }
 
         return geoJsonType switch
         {
             GeoJSONObjectType.Feature => value.ToObject<Feature.Feature>(),
             GeoJSONObjectType.Cluster => value.ToObject<Cluster>(),
-            _ => throw new NotSupportedException("Feature and FeatureCollection types are Feature objects and not Geometry objects")
+            _ => throw new NotSupportedException("Only Feature and Cluster types are supported")
         };
     }
 }

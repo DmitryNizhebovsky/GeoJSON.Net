@@ -22,7 +22,7 @@ internal class BoundingBoxConverter : JsonConverter
         return new BoundingBox(
             BoundingBoxType.FromBottomLeftTopRight,
             (Position) positions[0],
-            (Position)positions[1]);
+            (Position) positions[1]);
     }
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
