@@ -18,7 +18,7 @@ namespace GeoJSON.Net.Tests.Geometry
                 {
                     new Position(52.379790828551016, 5.3173828125),
                     new Position(52.36721467920585, 5.456085205078125),
-                    new Position(52.303440474272755, 5.386047363281249, 4.23),
+                    new Position(52.303440474272755, 5.386047363281249),
                     new Position(52.379790828551016, 5.3173828125),
                 })
             });
@@ -38,7 +38,7 @@ namespace GeoJSON.Net.Tests.Geometry
                 {
                     new Position(52.379790828551016, 5.3173828125),
                     new Position(52.36721467920585, 5.456085205078125),
-                    new Position(52.303440474272755, 5.386047363281249, 4.23),
+                    new Position(52.303440474272755, 5.386047363281249),
                     new Position(52.379790828551016, 5.3173828125),
                 })
             });
@@ -279,7 +279,7 @@ namespace GeoJSON.Net.Tests.Geometry
                 {
                     new Position(52.379790828551016, 5.3173828125),
                     new Position(52.36721467920585, 5.456085205078125),
-                    new Position(52.303440474272755, 5.386047363281249, 4.23),
+                    new Position(52.303440474272755, 5.386047363281249),
                     new Position(52.379790828551016, 5.3173828125),
                 })
             });
@@ -319,7 +319,7 @@ namespace GeoJSON.Net.Tests.Geometry
                 {
                     new Position(52.379790828551016 + offset, 5.3173828125 + offset),
                     new Position(52.36721467920585 + offset, 5.456085205078125 + offset),
-                    new Position(52.303440474272755 + offset, 5.386047363281249 + offset, 4.23 + offset),
+                    new Position(52.303440474272755 + offset, 5.386047363281249 + offset),
                     new Position(52.379790828551016 + offset, 5.3173828125 + offset),
                 })
             });

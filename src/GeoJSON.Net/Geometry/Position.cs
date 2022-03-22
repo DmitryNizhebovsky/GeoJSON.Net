@@ -19,13 +19,11 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// </summary>
     /// <param name="latitude">The latitude, or Y coordinate.</param>
     /// <param name="longitude">The longitude or X coordinate.</param>
-    /// <param name="altitude">The altitude in m(eter).</param>
-    public Position(double latitude, double longitude, double? altitude = null)
+    public Position(double latitude, double longitude)
     {
         // TODO Coordinate range validation should be performed only when CRS is supplied
         Latitude = latitude;
         Longitude = longitude;
-        Altitude = altitude;
     }
 
     /// <summary>
@@ -33,8 +31,7 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// </summary>
     /// <param name="latitude">The latitude, or Y coordinate e.g. '38.889722'.</param>
     /// <param name="longitude">The longitude, or X coordinate e.g. '-77.008889'.</param>
-    /// <param name="altitude">The altitude in m(eters).</param>
-    public Position(string latitude, string longitude, string altitude = null)
+    public Position(string latitude, string longitude)
     {
         // TODO Coordinate range validation should be performed only when CRS is supplied
         if (string.IsNullOrEmpty(latitude))
@@ -49,33 +46,18 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
 
         if (!double.TryParse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lat))
         {
-            throw new ArgumentOutOfRangeException(nameof(altitude), "Latitude representation must be a numeric.");
+            throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude representation must be a numeric.");
         }
 
         if (!double.TryParse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lon))
         {
-            throw new ArgumentOutOfRangeException(nameof(altitude), "Longitude representation must be a numeric.");
+            throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude representation must be a numeric.");
         }
 
         Latitude = lat;
         Longitude = lon;
-
-        if (altitude != null)
-        {
-            if (!double.TryParse(altitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double alt))
-            {
-                throw new ArgumentOutOfRangeException(nameof(altitude), "Altitude must be a proper altitude (m(eter) as double) value, e.g. '6500'.");
-            }
-
-            Altitude = alt;
-        }
     }
     
-    /// <summary>
-    /// Gets the altitude.
-    /// </summary>
-    public double? Altitude { get; }
-
     /// <summary>
     /// Gets the latitude or Y coordinate
     /// </summary>
@@ -86,7 +68,7 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// </summary>
     public double Longitude { get; }
 
-    public static readonly Position Zero = new(0.0d, 0.0d, 0.0d);
+    public static readonly Position Zero = new(0.0d, 0.0d);
 
     /// <summary>
     /// Returns a <see cref="string" /> that represents this instance.
@@ -96,9 +78,7 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// </returns>
     public override string ToString()
     {
-        return Altitude == null
-            ? string.Format(CultureInfo.InvariantCulture, "Latitude: {0}, Longitude: {1}", Latitude, Longitude)
-            : string.Format(CultureInfo.InvariantCulture, "Latitude: {0}, Longitude: {1}, Altitude: {2}", Latitude, Longitude, Altitude);
+        return string.Format(CultureInfo.InvariantCulture, "Latitude: {0}, Longitude: {1}", Latitude, Longitude);
     }
 
     #region IEqualityComparer, IEquatable
@@ -145,8 +125,7 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
         {
             return false;
         }
-        return left.Altitude.HasValue == right.Altitude.HasValue &&
-               (!left.Altitude.HasValue || DoubleComparer.Equals(left.Altitude.Value, right.Altitude.Value));
+        return true;
     }
 
     /// <summary>
@@ -162,7 +141,7 @@ public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Posit
     /// </summary>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Latitude, Longitude, Altitude.GetValueOrDefault());
+        return HashCode.Combine(Latitude, Longitude);
     }
 
     /// <summary>

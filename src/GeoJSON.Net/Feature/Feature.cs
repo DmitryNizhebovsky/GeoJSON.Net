@@ -17,7 +17,7 @@ namespace GeoJSON.Net.Feature;
 /// <remarks>
 /// See <see href="https://tools.ietf.org/html/rfc7946#section-3.2"/>
 /// </remarks>
-public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IEquatable<Feature<TGeometry, TProps, TOptions>>
+public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IFeatureCollectionItem<TGeometry>, IEquatable<Feature<TGeometry, TProps, TOptions>>
     where TGeometry : IGeometryObject
 {
     [JsonConstructor]

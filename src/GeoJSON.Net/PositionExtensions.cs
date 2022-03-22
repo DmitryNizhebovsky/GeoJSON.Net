@@ -9,7 +9,7 @@ internal static class PositionExtensions
     internal static Position ToPosition(this IEnumerable<double> coordinates)
     {
         using var enumerator = coordinates.GetEnumerator();
-        double lat, lng, alt;
+        double lat, lng;
         if (!enumerator.MoveNext())
         {
             throw new ArgumentException("Expected 2 or 3 coordinates but got 0");
@@ -24,11 +24,6 @@ internal static class PositionExtensions
         {
             return new Position(lat, lng);
         }
-        alt = enumerator.Current;
-        if (enumerator.MoveNext())
-        {
-            throw new ArgumentException("Expected 2 or 3 coordinates but got >= 4");
-        }
-        return new Position(lat, lng, alt);
+        return new Position(lat, lng);
     }
 }

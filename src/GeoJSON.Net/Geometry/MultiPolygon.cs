@@ -17,7 +17,6 @@ namespace GeoJSON.Net.Geometry;
 /// </remarks>
 public class MultiPolygon : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPolygon>, IEquatable<MultiPolygon>
 {
-
     /// <summary>
     /// Initializes a new instance of the <see cref="MultiPolygon" /> class.
     /// </summary>

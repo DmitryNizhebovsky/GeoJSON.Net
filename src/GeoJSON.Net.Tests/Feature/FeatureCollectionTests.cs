@@ -28,8 +28,8 @@ public class FeatureCollectionTests : TestBase
         var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
 
         Assert.IsNotNull(featureCollection.Features);
-        Assert.AreEqual(featureCollection.Features.Count, 3);
-        Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Point), 1);
+        Assert.AreEqual(featureCollection.Features.Count, 4);
+        Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Point), 2);
         Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.MultiPolygon), 1);
         Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Polygon), 1);
     }
@@ -38,7 +38,7 @@ public class FeatureCollectionTests : TestBase
     public void FeatureCollectionSerialization()
     {
         var model = new FeatureCollection();
-        for (var i = 10; i-- > 0;)
+        for (var i = 0; i < 10; i++)
         {
             var geom = new LineString(new[]
             {
@@ -134,20 +134,48 @@ public class FeatureCollectionTests : TestBase
     private static FeatureCollection GetFeatureCollection()
     {
         var model = new FeatureCollection();
-        for (var i = 10; i-- > 0;)
+        for (var i = 0; i < 5; i++)
         {
-            var geom = new LineString(new[]
+            model.Features.Add(CreateFeature());
+        }
+
+        for (var i = 0; i < 5; i++)
+        {
+            model.Features.Add(CreateCluster());
+        }
+        return model;
+    }
+
+    private static Net.Feature.Feature CreateFeature()
+    {
+        var geom = new LineString(new[]
             {
                 new Position(51.010, -1.034),
                 new Position(51.010, -0.034)
             });
 
-            var props = FeatureTests.GetPropertiesInRandomOrder();
+        var props = FeatureTests.GetPropertiesInRandomOrder();
+        var options = FeatureTests.GetPropertiesInRandomOrder();
+        var id = Guid.NewGuid().ToString();
 
-            var feature = new Net.Feature.Feature(geom, props);
-            model.Features.Add(feature);
-        }
-        return model;
+        return new Net.Feature.Feature(geom, props, options, id);
+    }
+
+    private static Cluster CreateCluster()
+    {
+        var geom = new LineString(new[]
+            {
+                new Position(51.010, -1.034),
+                new Position(51.010, -0.034)
+            });
+
+        var props = FeatureTests.GetPropertiesInRandomOrder();
+        var options = FeatureTests.GetPropertiesInRandomOrder();
+        var number = 42;
+        var bbox = new BoundingBox(BoundingBoxType.FromBottomLeftTopRight, new Position(1, 2), new Position(3, 4));
+        var id = Guid.NewGuid().ToString();
+
+        return new Cluster(geom, props, options, number, bbox, id);
     }
 
     private static void Assert_Are_Equal(FeatureCollection left, FeatureCollection right)

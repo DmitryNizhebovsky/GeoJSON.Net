@@ -35,7 +35,6 @@ internal class GenericFeatureTests : TestBase
         Assert.AreEqual(GeoJSONObjectType.Point, feature.Geometry.Type);
         Assert.AreEqual(125.6, feature.Geometry.Coordinates.Longitude);
         Assert.AreEqual(10.1, feature.Geometry.Coordinates.Latitude);
-        Assert.AreEqual(456, feature.Geometry.Coordinates.Altitude);
     }
 
     [Test]

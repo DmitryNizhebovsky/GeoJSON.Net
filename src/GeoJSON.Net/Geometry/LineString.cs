@@ -67,8 +67,7 @@ public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<Line
         var lastCoordinate = Coordinates[^1];
 
         return firstCoordinate.Longitude.Equals(lastCoordinate.Longitude)
-               && firstCoordinate.Latitude.Equals(lastCoordinate.Latitude)
-               && Nullable.Equals(firstCoordinate.Altitude, lastCoordinate.Altitude);
+               && firstCoordinate.Latitude.Equals(lastCoordinate.Latitude);
     }
 
     /// <summary>

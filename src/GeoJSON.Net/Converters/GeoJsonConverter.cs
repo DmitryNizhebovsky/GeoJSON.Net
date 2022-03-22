@@ -30,7 +30,7 @@ public class GeoJsonConverter : JsonConverter
 	/// <summary>
 	///     Reads the JSON representation of the object.
 	/// </summary>
-	/// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+	/// <param name="reader">The <see cref="JsonReader" /> to read from.</param>
 	/// <param name="objectType">Type of the object.</param>
 	/// <param name="existingValue">The existing value of object being read.</param>
 	/// <param name="serializer">The calling serializer.</param>
@@ -72,12 +72,12 @@ public class GeoJsonConverter : JsonConverter
 	/// </summary>
 	/// <param name="value">The value.</param>
 	/// <returns></returns>
-	/// <exception cref="Newtonsoft.Json.JsonReaderException">
+	/// <exception cref="JsonReaderException">
 	/// json must contain a "type" property
 	/// or
 	/// type must be a valid geojson object type
 	/// </exception>
-	/// <exception cref="System.NotSupportedException">
+	/// <exception cref="NotSupportedException">
 	/// Unknown geoJsonType {geoJsonType}
 	/// </exception>
 	private static IGeoJSONObject ReadGeoJson(JObject value)
@@ -87,23 +87,24 @@ public class GeoJsonConverter : JsonConverter
 			throw new JsonReaderException("json must contain a \"type\" property");
 		}
 
-            if (!Enum.TryParse(token.Value<string>(), true, out GeoJSONObjectType geoJsonType))
+		if (!Enum.TryParse(token.Value<string>(), true, out GeoJSONObjectType geoJsonType))
 		{
 			throw new JsonReaderException("type must be a valid geojson object type");
 		}
 
-            return geoJsonType switch
-            {
-                GeoJSONObjectType.Point => value.ToObject<Point>(),
-                GeoJSONObjectType.MultiPoint => value.ToObject<MultiPoint>(),
-                GeoJSONObjectType.LineString => value.ToObject<LineString>(),
-                GeoJSONObjectType.MultiLineString => value.ToObject<MultiLineString>(),
-                GeoJSONObjectType.Polygon => value.ToObject<Polygon>(),
-                GeoJSONObjectType.MultiPolygon => value.ToObject<MultiPolygon>(),
-                GeoJSONObjectType.GeometryCollection => value.ToObject<GeometryCollection>(),
-                GeoJSONObjectType.Feature => value.ToObject<Feature.Feature>(),
-                GeoJSONObjectType.FeatureCollection => value.ToObject<FeatureCollection>(),
-                _ => throw new NotSupportedException($"Unknown geoJsonType {geoJsonType}")
-            };
-        }
+		return geoJsonType switch
+		{
+			GeoJSONObjectType.Point => value.ToObject<Point>(),
+			GeoJSONObjectType.MultiPoint => value.ToObject<MultiPoint>(),
+			GeoJSONObjectType.LineString => value.ToObject<LineString>(),
+			GeoJSONObjectType.MultiLineString => value.ToObject<MultiLineString>(),
+			GeoJSONObjectType.Polygon => value.ToObject<Polygon>(),
+			GeoJSONObjectType.MultiPolygon => value.ToObject<MultiPolygon>(),
+			GeoJSONObjectType.GeometryCollection => value.ToObject<GeometryCollection>(),
+			GeoJSONObjectType.Feature => value.ToObject<Feature.Feature>(),
+			GeoJSONObjectType.Cluster => value.ToObject<Cluster>(),
+			GeoJSONObjectType.FeatureCollection => value.ToObject<FeatureCollection>(),
+			_ => throw new NotSupportedException($"Unknown geoJsonType {geoJsonType}")
+		};
+	}
 }

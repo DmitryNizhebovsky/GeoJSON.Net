@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GeoJSON.Net.Converters;
+using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Feature;
@@ -10,12 +12,13 @@ namespace GeoJSON.Net.Feature;
 /// <summary>
 /// Defines the FeatureCollection type.
 /// </summary>
-public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollection>, IEquatable<FeatureCollection>
+public class FeatureCollection<TGeometry> : GeoJSONObject, IEqualityComparer<FeatureCollection<TGeometry>>, IEquatable<FeatureCollection<TGeometry>>
+    where TGeometry : IGeometryObject
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="FeatureCollection" /> class.
     /// </summary>
-    public FeatureCollection() : this(new List<Feature>())
+    public FeatureCollection() : this(new List<IFeatureCollectionItem<TGeometry>>())
     {
     }
 
@@ -23,7 +26,7 @@ public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollect
     /// Initializes a new instance of the <see cref="FeatureCollection" /> class.
     /// </summary>
     /// <param name="features">The features.</param>
-    public FeatureCollection(List<Feature> features)
+    public FeatureCollection(List<IFeatureCollectionItem<TGeometry>> features)
     {
         Features = features ?? throw new ArgumentNullException(nameof(features));
     }
@@ -35,7 +38,8 @@ public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollect
     /// </summary>
     /// <value>The features.</value>
     [JsonProperty(PropertyName = "features", Required = Required.Always)]
-    public List<Feature> Features { get; private set; }
+    [JsonConverter(typeof(FeatureCollectionItemConverter))]
+    public List<IFeatureCollectionItem<TGeometry>> Features { get; private set; }
 
     #region IEqualityComparer, IEquatable
 
@@ -44,13 +48,13 @@ public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollect
     /// </summary>
     public override bool Equals(object obj)
     {
-        return Equals(this, obj as FeatureCollection);
+        return Equals(this, obj as FeatureCollection<TGeometry>);
     }
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object
     /// </summary>
-    public bool Equals(FeatureCollection other)
+    public bool Equals(FeatureCollection<TGeometry> other)
     {
         return Equals(this, other);
     }
@@ -58,7 +62,7 @@ public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollect
     /// <summary>
     /// Determines whether the specified object instances are considered equal
     /// </summary>
-    public bool Equals(FeatureCollection left, FeatureCollection right)
+    public bool Equals(FeatureCollection<TGeometry> left, FeatureCollection<TGeometry> right)
     {
         if (base.Equals(left, right))
         {
@@ -70,7 +74,7 @@ public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollect
     /// <summary>
     /// Determines whether the specified object instances are considered equal
     /// </summary>
-    public static bool operator ==(FeatureCollection left, FeatureCollection right)
+    public static bool operator ==(FeatureCollection<TGeometry> left, FeatureCollection<TGeometry> right)
     {
         if (ReferenceEquals(left, right))
         {
@@ -86,7 +90,7 @@ public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollect
     /// <summary>
     /// Determines whether the specified object instances are not considered equal
     /// </summary>
-    public static bool operator !=(FeatureCollection left, FeatureCollection right)
+    public static bool operator !=(FeatureCollection<TGeometry> left, FeatureCollection<TGeometry> right)
     {
         return !(left == right);
     }
@@ -107,10 +111,24 @@ public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollect
     /// <summary>
     /// Returns the hash code for the specified object
     /// </summary>
-    public int GetHashCode(FeatureCollection other)
+    public int GetHashCode(FeatureCollection<TGeometry> other)
     {
         return other.GetHashCode();
     }
 
     #endregion
+}
+
+public class FeatureCollection : FeatureCollection<IGeometryObject>
+{
+    [JsonConstructor]
+    public FeatureCollection(List<IFeatureCollectionItem<IGeometryObject>> features)
+        : base(features)
+    {
+    }
+
+    public FeatureCollection()
+        : base(new List<IFeatureCollectionItem<IGeometryObject>>())
+    {
+    }
 }

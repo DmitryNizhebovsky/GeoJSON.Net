@@ -14,20 +14,20 @@ namespace GeoJSON.Net.Tests.Geometry
         {
             get
             {
-                var point = new Point(new Position(1, 2, 3));
+                var point = new Point(new Position(1, 2));
 
                 var multiPoint = new MultiPoint(new List<Point>
                 {
                     new Point(new Position(52.379790828551016, 5.3173828125)),
                     new Point(new Position(52.36721467920585, 5.456085205078125)),
-                    new Point(new Position(52.303440474272755, 5.386047363281249, 4.23))
+                    new Point(new Position(52.303440474272755, 5.386047363281249))
                 });
 
                 var lineString = new LineString(new List<IPosition>
                 {
                     new Position(52.379790828551016, 5.3173828125),
                     new Position(52.36721467920585, 5.456085205078125),
-                    new Position(52.303440474272755, 5.386047363281249, 4.23)
+                    new Position(52.303440474272755, 5.386047363281249)
                 });
 
                 var multiLineString = new MultiLineString(new List<LineString>
@@ -36,13 +36,13 @@ namespace GeoJSON.Net.Tests.Geometry
                     {
                         new Position(52.379790828551016, 5.3173828125),
                         new Position(52.36721467920585, 5.456085205078125),
-                        new Position(52.303440474272755, 5.386047363281249, 4.23)
+                        new Position(52.303440474272755, 5.386047363281249)
                     }),
                     new LineString(new List<IPosition>
                     {
                         new Position(52.379790828551016, 5.3273828125),
                         new Position(52.36721467920585, 5.486085205078125),
-                        new Position(52.303440474272755, 5.426047363281249, 4.23)
+                        new Position(52.303440474272755, 5.426047363281249)
                     })
                 });
 
@@ -52,7 +52,7 @@ namespace GeoJSON.Net.Tests.Geometry
                     {
                         new Position(52.379790828551016, 5.3173828125),
                         new Position(52.36721467920585, 5.456085205078125),
-                        new Position(52.303440474272755, 5.386047363281249, 4.23),
+                        new Position(52.303440474272755, 5.386047363281249),
                         new Position(52.379790828551016, 5.3173828125)
                     })
                 });

@@ -10,11 +10,6 @@ namespace GeoJSON.Net.Geometry;
 public interface IPosition
 {
     /// <summary>
-    /// Gets the altitude.
-    /// </summary>
-    double? Altitude { get; }
-
-    /// <summary>
     /// Gets the latitude.
     /// </summary>
     /// <value>The latitude.</value>

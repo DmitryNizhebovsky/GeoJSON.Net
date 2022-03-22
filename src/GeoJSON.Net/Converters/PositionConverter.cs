@@ -64,11 +64,6 @@ public class PositionConverter : JsonConverter
             writer.WriteValue(coordinates.Longitude);
             writer.WriteValue(coordinates.Latitude);
 
-            if (coordinates.Altitude.HasValue)
-            {
-                writer.WriteValue(coordinates.Altitude.Value);
-            }
-
             writer.WriteEndArray();
         }
         else

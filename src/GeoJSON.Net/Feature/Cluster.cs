@@ -14,20 +14,20 @@ namespace GeoJSON.Net.Feature;
 /// <typeparam name="TGeometry"></typeparam>
 /// <typeparam name="TProps"></typeparam>
 /// <typeparam name="TOptions"></typeparam>
-public class Cluster<TGeometry, TProps, TOptions> : GeoJSONObject, IEquatable<Cluster<TGeometry, TProps, TOptions>>
+public class Cluster<TGeometry, TProps, TOptions> : GeoJSONObject, IFeatureCollectionItem<TGeometry>, IEquatable<Cluster<TGeometry, TProps, TOptions>>
     where TGeometry : IGeometryObject
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Cluster{TGeometry, TProps, TOptions}" /> class.
     /// </summary>
-    /// <param name="geometry"></param>
-    /// <param name="properties"></param>
-    /// <param name="options"></param>
-    /// <param name="number"></param>
-    /// <param name="boundingBox"></param>
-    /// <param name="id"></param>
+    /// <param name="geometry">The Geometry Object.</param>
+    /// <param name="properties">The properties.</param>
+    /// <param name="options">The options.</param>
+    /// <param name="number">The number of objects in the cluster.</param>
+    /// <param name="boundingBox">The bounding box.</param>
+    /// <param name="id">The identifier.</param>
     [JsonConstructor]
-    public Cluster(TGeometry geometry, TProps properties, TOptions options, long number, BoundingBox boundingBox, string id = null)
+    public Cluster(TGeometry geometry, TProps properties, TOptions options, long number, BoundingBox boundingBox, string id)
     {
         Geometry = geometry;
         Properties = properties;
@@ -113,19 +113,21 @@ public class Cluster<TGeometry, TProps, TOptions> : GeoJSONObject, IEquatable<Cl
 /// </summary>
 public class Cluster : Cluster<IGeometryObject>
 {
+    /// <inheritdoc/>
     [JsonConstructor]
     public Cluster(
         IGeometryObject geometry,
+        IDictionary<string, object> properties,
+        IDictionary<string, object> options,
         long number,
         BoundingBox boundingBox,
-        IDictionary<string, object> properties = null,
-        IDictionary<string, object> options = null,
-        string id = null)
+        string id)
         : base(geometry, properties, options, number, boundingBox, id)
     {
     }
 
-    public Cluster(IGeometryObject geometry, object properties, object options, long number, BoundingBox boundingBox, string id = null)
+    /// <inheritdoc/>
+    public Cluster(IGeometryObject geometry, object properties, object options, long number, BoundingBox boundingBox, string id)
         : base(geometry, properties, options, number, boundingBox, id)
     {
     }
@@ -144,15 +146,16 @@ public class Cluster<TGeometry> : Cluster<TGeometry, IDictionary<string, object>
     /// </summary>
     /// <param name="geometry">The Geometry Object.</param>
     /// <param name="properties">The properties.</param>
-    /// <param name="id">The (optional) identifier.</param>
+    /// <param name="options">The options.</param>
+    /// <param name="number">The number of objects in the cluster.</param>
+    /// <param name="boundingBox">The bounding box.</param>
+    /// <param name="id">The identifier.</param>
     [JsonConstructor]
     public Cluster(
         TGeometry geometry,
-        long number,
-        BoundingBox boundingBox,
-        IDictionary<string, object> properties = null,
-        IDictionary<string, object> options = null,
-        string id = null)
+        IDictionary<string, object> properties,
+        IDictionary<string, object> options,
+        long number, BoundingBox boundingBox, string id)
         : base(
             geometry,
             properties ?? new Dictionary<string, object>(),
@@ -165,13 +168,13 @@ public class Cluster<TGeometry> : Cluster<TGeometry, IDictionary<string, object>
     /// Initializes a new instance of the <see cref="Feature" /> class.
     /// </summary>
     /// <param name="geometry">The Geometry Object.</param>
-    /// <param name="properties">
-    /// Class used to fill feature properties. Any public member will be added to feature
-    /// properties
-    /// </param>
-    /// <param name="id">The (optional) identifier.</param>
-    public Cluster(TGeometry geometry, object properties, object options, long number, BoundingBox boundingBox, string id = null)
-        : this(geometry, number, boundingBox, GetDictionaryOfPublicProperties(properties), GetDictionaryOfPublicProperties(options), id)
+    /// <param name="properties">Class used to fill cluster properties. Any public member will be added to cluster properties.</param>
+    /// <param name="options">Class used to fill cluster options. Any public member will be added to cluster options.</param>
+    /// <param name="number">The number of objects in the cluster.</param>
+    /// <param name="boundingBox">The bounding box.</param>
+    /// <param name="id">The identifier.</param>
+    public Cluster(TGeometry geometry, object properties, object options, long number, BoundingBox boundingBox, string id)
+        : this(geometry, GetDictionaryOfPublicProperties(properties), GetDictionaryOfPublicProperties(options), number, boundingBox, id)
     {
     }
 
@@ -187,7 +190,7 @@ public class Cluster<TGeometry> : Cluster<TGeometry, IDictionary<string, object>
             .GetTypeInfo()
             .DeclaredProperties
             .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
-            .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties, null));
+            .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties));
     }
 
     #region IEquatable

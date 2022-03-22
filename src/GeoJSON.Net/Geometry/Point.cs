@@ -16,7 +16,6 @@ namespace GeoJSON.Net.Geometry;
 /// </remarks>
 public class Point : GeoJSONObject, IGeometryObject, IEqualityComparer<Point>, IEquatable<Point>
 {
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Point" /> class.
     /// </summary>

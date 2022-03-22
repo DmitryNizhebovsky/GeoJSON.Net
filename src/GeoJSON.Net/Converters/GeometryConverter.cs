@@ -31,7 +31,7 @@ public class GeometryConverter : JsonConverter
     /// <summary>
     ///     Reads the JSON representation of the object.
     /// </summary>
-    /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+    /// <param name="reader">The <see cref="JsonReader" /> to read from.</param>
     /// <param name="objectType">Type of the object.</param>
     /// <param name="existingValue">The existing value of object being read.</param>
     /// <param name="serializer">The calling serializer.</param>
@@ -74,12 +74,12 @@ public class GeometryConverter : JsonConverter
     /// </summary>
     /// <param name="value">The value.</param>
     /// <returns></returns>
-    /// <exception cref="Newtonsoft.Json.JsonReaderException">
+    /// <exception cref="JsonReaderException">
     /// json must contain a "type" property
     /// or
     /// type must be a valid geojson geometry object type
     /// </exception>
-    /// <exception cref="System.NotSupportedException">
+    /// <exception cref="NotSupportedException">
     /// Feature and FeatureCollection types are Feature objects and not Geometry objects
     /// </exception>
     private static IGeometryObject ReadGeoJson(JObject value)

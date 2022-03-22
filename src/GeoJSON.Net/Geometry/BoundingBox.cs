@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using GeoJSON.Net.Converters;
+using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Geometry;
 
 /// <summary>
 /// A bounding rectangle described by the positions of two opposite corners top left and bottom right or bottom left and top right.
 /// </summary>
+[JsonConverter(typeof(BoundingBoxConverter))]
 public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBox>
 {
     /// <summary>
-    /// Bottom right or top right corner.
+    /// The min.
     /// </summary>
-    public Position RightCorner { get; }
+    public Position Min { get; }
 
     /// <summary>
-    /// Bottom left or top left corner.
+    /// The max.
     /// </summary>
-    public Position LeftCorner { get; }
+    public Position Max { get; }
 
     /// <summary>
     /// Specifies how the bounding rectangle is defined.
@@ -28,13 +31,13 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     /// <summary>
     /// Initializes a new instance of the <see cref="BoundingBox" /> class.
     /// </summary>
-    /// <param name="rightCorner">Bottom right or top right corner.</param>
-    /// <param name="leftCorner">Bottom left or top left corner.</param>
-    public BoundingBox(BoundingBoxType boundingBoxType, Position rightCorner, Position leftCorner)
+    /// <param name="min">The min.</param>
+    /// <param name="max">The max.</param>
+    public BoundingBox(BoundingBoxType boundingBoxType, Position min, Position max)
     {
         BoundingBoxType = boundingBoxType;
-        RightCorner = rightCorner;
-        LeftCorner = leftCorner;
+        Min = min;
+        Max = max;
     }
 
     /// <summary>
@@ -86,7 +89,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     public override string ToString()
     {
         return string.Format(CultureInfo.InvariantCulture, "BBOX ({0}, {1}, {2}, {3})",
-            LeftCorner.Latitude, LeftCorner.Longitude, RightCorner.Latitude, RightCorner.Longitude);
+            Min.Latitude, Min.Longitude, Max.Latitude, Max.Longitude);
     }
 
     #region IEqualityComparer, IEquatable
@@ -96,8 +99,8 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     /// </summary>
     public static bool operator ==(BoundingBox left, BoundingBox right)
     {
-        return left.LeftCorner == right.LeftCorner
-            && left.RightCorner == right.RightCorner
+        return left.Max == right.Max
+            && left.Min == right.Min
             && left.BoundingBoxType == right.BoundingBoxType;
     }
 
@@ -138,7 +141,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     /// </summary>
     public override int GetHashCode()
     {
-        return HashCode.Combine(LeftCorner, RightCorner, BoundingBoxType);
+        return HashCode.Combine(Max, Min, BoundingBoxType);
     }
 
     /// <summary>
