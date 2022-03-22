@@ -2,86 +2,84 @@ using System;
 using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Feature;
 using Newtonsoft.Json;
-using NUnit.Framework;
+using Xunit;
 
-namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
+namespace GeoJSON.Net.Tests.CoordinateReferenceSystem;
+
+public class NamedCRSTests : TestBase
 {
-    [TestFixture]
-    public class NamedCRSTests : TestBase
+    [Fact]
+    public void Has_Correct_Type()
     {
-        [Test]
-        public void Has_Correct_Type()
-        {
-            var name = "EPSG:31370";
-            var crs = new NamedCRS(name);
+        var name = "EPSG:31370";
+        var crs = new NamedCRS(name);
 
-            Assert.AreEqual(CRSType.Name, crs.Type);
-        }
+        Assert.Equal(CRSType.Name, crs.Type);
+    }
 
-        [Test]
-        public void Has_Name_Property_With_Name()
-        {
-            var name = "EPSG:31370";
-            var crs = new NamedCRS(name);
+    [Fact]
+    public void Has_Name_Property_With_Name()
+    {
+        var name = "EPSG:31370";
+        var crs = new NamedCRS(name);
 
-            Assert.IsTrue(crs.Properties.ContainsKey("name"));
-            Assert.AreEqual(name, crs.Properties["name"]);
-        }
+        Assert.True(crs.Properties.ContainsKey("name"));
+        Assert.Equal(name, crs.Properties["name"]);
+    }
 
-        [Test]
-        public void Can_Serialize()
-        {
-            var collection = new FeatureCollection() { CRS = new NamedCRS("EPSG:31370") };
-            var actualJson = JsonConvert.SerializeObject(collection);
+    [Fact]
+    public void Can_Serialize()
+    {
+        var collection = new FeatureCollection() { CRS = new NamedCRS("EPSG:31370") };
+        var actualJson = JsonConvert.SerializeObject(collection);
 
-            JsonAssert.Contains("{\"properties\":{\"name\":\"EPSG:31370\"},\"type\":\"name\"}", actualJson);
-        }
+        JsonAssert.Contains("{\"properties\":{\"name\":\"EPSG:31370\"},\"type\":\"name\"}", actualJson);
+    }
 
-        [Test]
-        public void Ctor_Throws_ArgumentNullExpection_When_Name_Is_Null()
-        {
-            Assert.Throws<ArgumentNullException>(() => { var collection = new FeatureCollection() { CRS = new NamedCRS(null) }; });
-        }
+    [Fact]
+    public void Ctor_Throws_ArgumentNullExpection_When_Name_Is_Null()
+    {
+        Assert.Throws<ArgumentNullException>(() => { var collection = new FeatureCollection() { CRS = new NamedCRS(null) }; });
+    }
 
-        [Test]
-        public void Ctor_Throws_ArgumentNullExpection_When_Name_Is_Empty()
-        {
-            Assert.Throws<ArgumentException>(() => { var collection = new FeatureCollection() { CRS = new NamedCRS(string.Empty) }; });
-        }
+    [Fact]
+    public void Ctor_Throws_ArgumentNullExpection_When_Name_Is_Empty()
+    {
+        Assert.Throws<ArgumentException>(() => { var collection = new FeatureCollection() { CRS = new NamedCRS(string.Empty) }; });
+    }
 
-        [Test]
-        public void Equals_GetHashCode_Contract()
-        {
-            var name = "EPSG:31370";
+    [Fact]
+    public void Equals_GetHashCode_Contract()
+    {
+        var name = "EPSG:31370";
 
-            var left = new NamedCRS(name);
-            var right = new NamedCRS(name);
+        var left = new NamedCRS(name);
+        var right = new NamedCRS(name);
 
-            Assert.AreEqual(left, right);
+        Assert.Equal(left, right);
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+        Assert.True(left == right);
+        Assert.True(right == left);
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(right.Equals(left));
+        Assert.True(left.Equals(right));
+        Assert.True(right.Equals(left));
 
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+        Assert.True(left.Equals(left));
+        Assert.True(right.Equals(right));
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+        Assert.Equal(left.GetHashCode(), right.GetHashCode());
 
-            name = "EPSG:25832";
-            right = new NamedCRS(name);
+        name = "EPSG:25832";
+        right = new NamedCRS(name);
 
-            Assert.AreNotEqual(left, right);
+        Assert.NotEqual(left, right);
 
-            Assert.IsFalse(left == right);
-            Assert.IsFalse(right == left);
+        Assert.False(left == right);
+        Assert.False(right == left);
 
-            Assert.IsFalse(left.Equals(right));
-            Assert.IsFalse(right.Equals(left));
+        Assert.False(left.Equals(right));
+        Assert.False(right.Equals(left));
 
-            Assert.AreNotEqual(left.GetHashCode(), right.GetHashCode());
-        }
+        Assert.NotEqual(left.GetHashCode(), right.GetHashCode());
     }
 }

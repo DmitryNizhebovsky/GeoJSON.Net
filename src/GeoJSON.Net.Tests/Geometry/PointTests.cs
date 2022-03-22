@@ -1,94 +1,92 @@
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
-using NUnit.Framework;
+using Xunit;
 
-namespace GeoJSON.Net.Tests.Geometry
+namespace GeoJSON.Net.Tests.Geometry;
+
+public class PointTests : TestBase
 {
-    [TestFixture]
-    public class PointTests : TestBase
+    [Fact]
+    public void Can_Serialize_With_Lat_Lon()
     {
-        [Test]
-        public void Can_Serialize_With_Lat_Lon()
-        {
-            var point = new Point(new Position(53.2455662, 90.65464646));
-            
-            var expectedJson = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
+        var point = new Point(new Position(53.2455662, 90.65464646));
+        
+        var expectedJson = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
 
-            var actualJson = JsonConvert.SerializeObject(point);
-            
-            JsonAssert.AreEqual(expectedJson, actualJson);
-        }
+        var actualJson = JsonConvert.SerializeObject(point);
+        
+        JsonAssert.AreEqual(expectedJson, actualJson);
+    }
 
-        [Test]
-        public void Can_Serialize_With_Lat_Lon_Alt()
-        {
-            var point = new Point(new Position(53.2455662, 90.65464646));
+    [Fact]
+    public void Can_Serialize_With_Lat_Lon_Alt()
+    {
+        var point = new Point(new Position(53.2455662, 90.65464646));
 
-            var expectedJson = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
+        var expectedJson = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
 
-            var actualJson = JsonConvert.SerializeObject(point);
+        var actualJson = JsonConvert.SerializeObject(point);
 
-            JsonAssert.AreEqual(expectedJson, actualJson);
-        }
+        JsonAssert.AreEqual(expectedJson, actualJson);
+    }
 
-        [Test]
-        public void Can_Deserialize_With_Lat_Lon_Alt()
-        {
-            var json = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
+    [Fact]
+    public void Can_Deserialize_With_Lat_Lon_Alt()
+    {
+        var json = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
 
-            var expectedPoint = new Point(new Position(53.2455662, 90.65464646));
+        var expectedPoint = new Point(new Position(53.2455662, 90.65464646));
 
-            var actualPoint = JsonConvert.DeserializeObject<Point>(json);
+        var actualPoint = JsonConvert.DeserializeObject<Point>(json);
 
-            Assert.IsNotNull(actualPoint);
-            Assert.IsNotNull(actualPoint.Coordinates);
-            Assert.AreEqual(53.2455662, actualPoint.Coordinates.Latitude);
-            Assert.AreEqual(90.65464646, actualPoint.Coordinates.Longitude);
-            Assert.AreEqual(expectedPoint, actualPoint);
-        }
+        Assert.NotNull(actualPoint);
+        Assert.NotNull(actualPoint.Coordinates);
+        Assert.Equal(53.2455662, actualPoint.Coordinates.Latitude);
+        Assert.Equal(90.65464646, actualPoint.Coordinates.Longitude);
+        Assert.Equal(expectedPoint, actualPoint);
+    }
 
-        [Test]
-        public void Can_Deserialize_With_Lat_Lon()
-        {
-            var json = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
+    [Fact]
+    public void Can_Deserialize_With_Lat_Lon()
+    {
+        var json = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
 
-            var expectedPoint = new Point(new Position(53.2455662, 90.65464646));
+        var expectedPoint = new Point(new Position(53.2455662, 90.65464646));
 
-            var actualPoint = JsonConvert.DeserializeObject<Point>(json);
+        var actualPoint = JsonConvert.DeserializeObject<Point>(json);
 
-            Assert.IsNotNull(actualPoint);
-            Assert.IsNotNull(actualPoint.Coordinates);
-            Assert.AreEqual(53.2455662, actualPoint.Coordinates.Latitude);
-            Assert.AreEqual(90.65464646, actualPoint.Coordinates.Longitude);
-            Assert.AreEqual(expectedPoint, actualPoint);
-        }
+        Assert.NotNull(actualPoint);
+        Assert.NotNull(actualPoint.Coordinates);
+        Assert.Equal(53.2455662, actualPoint.Coordinates.Latitude);
+        Assert.Equal(90.65464646, actualPoint.Coordinates.Longitude);
+        Assert.Equal(expectedPoint, actualPoint);
+    }
 
-        [Test]
-        public void Equals_GetHashCode_Contract()
-        {
-            var json = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
+    [Fact]
+    public void Equals_GetHashCode_Contract()
+    {
+        var json = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
 
-            var expectedPoint = new Point(new Position(53.2455662, 90.65464646));
+        var expectedPoint = new Point(new Position(53.2455662, 90.65464646));
 
-            var actualPoint = JsonConvert.DeserializeObject<Point>(json);
+        var actualPoint = JsonConvert.DeserializeObject<Point>(json);
 
-            Assert.AreEqual(expectedPoint, actualPoint);
-            Assert.IsTrue(expectedPoint.Equals(actualPoint));
-            Assert.IsTrue(actualPoint.Equals(expectedPoint));
+        Assert.Equal(expectedPoint, actualPoint);
+        Assert.True(expectedPoint.Equals(actualPoint));
+        Assert.True(actualPoint.Equals(expectedPoint));
 
-            Assert.AreEqual(expectedPoint.GetHashCode(), actualPoint.GetHashCode());
-        }
+        Assert.Equal(expectedPoint.GetHashCode(), actualPoint.GetHashCode());
+    }
 
-        [Test]
-        public void Can_Serialize_With_Lat_Lon_Alt_DefaultValueHandling_Ignore()
-        {
-            var point = new Point(new Position(53.2455662, 90.65464646));
+    [Fact]
+    public void Can_Serialize_With_Lat_Lon_Alt_DefaultValueHandling_Ignore()
+    {
+        var point = new Point(new Position(53.2455662, 90.65464646));
 
-            var expectedJson = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
+        var expectedJson = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
 
-            var actualJson = JsonConvert.SerializeObject(point, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+        var actualJson = JsonConvert.SerializeObject(point, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
 
-            JsonAssert.AreEqual(expectedJson, actualJson);
-        }
+        JsonAssert.AreEqual(expectedJson, actualJson);
     }
 }

@@ -3,39 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
-using NUnit.Framework;
+using Xunit;
 
 namespace GeoJSON.Net.Tests.Feature;
 
-[TestFixture]
 public class FeatureTests : TestBase
 {
-    [Test]
+    [Fact]
     public void Can_Deserialize_Point_Feature()
     {
         var json = GetExpectedJson();
 
         var feature = JsonConvert.DeserializeObject<Net.Feature.Feature>(json);
 
-        Assert.IsNotNull(feature);
-        Assert.IsNotNull(feature.Properties);
-        Assert.IsTrue(feature.Properties.Any());
+        Assert.NotNull(feature);
+        Assert.NotNull(feature.Properties);
+        Assert.True(feature.Properties.Any());
 
-        Assert.IsTrue(feature.Properties.ContainsKey("name"));
-        Assert.AreEqual(feature.Properties["name"], "Dinagat Islands");
+        Assert.True(feature.Properties.ContainsKey("name"));
+        Assert.Equal("Dinagat Islands", feature.Properties["name"]);
 
-        Assert.IsNotNull(feature.Options);
-        Assert.IsTrue(feature.Options.Any());
+        Assert.NotNull(feature.Options);
+        Assert.True(feature.Options.Any());
 
-        Assert.IsTrue(feature.Options.ContainsKey("fill"));
-        Assert.AreEqual(feature.Options["fill"], true);
+        Assert.True(feature.Options.ContainsKey("fill"));
+        Assert.Equal(true, feature.Options["fill"]);
 
-        Assert.AreEqual("test-id", feature.Id);
+        Assert.Equal("test-id", feature.Id);
 
-        Assert.AreEqual(GeoJSONObjectType.Point, feature.Geometry.Type);
+        Assert.Equal(GeoJSONObjectType.Point, feature.Geometry.Type);
     }
 
-    [Test]
+    [Fact]
     public void Can_Serialize_LineString_Feature()
     {
         var coordinates = new[]
@@ -65,7 +64,7 @@ public class FeatureTests : TestBase
         JsonAssert.AreEqual(expectedJson, actualJson);
     }
 
-    [Test]
+    [Fact]
     public void Can_Serialize_MultiLineString_Feature()
     {
         var geometry = new MultiLineString(new List<LineString>
@@ -93,7 +92,7 @@ public class FeatureTests : TestBase
         JsonAssert.AreEqual(expectedJson, actualJson);
     }
 
-    [Test]
+    [Fact]
     public void Can_Serialize_Point_Feature()
     {
         var geometry = new Point(new Position(1, 2));
@@ -104,7 +103,7 @@ public class FeatureTests : TestBase
         JsonAssert.AreEqual(expectedJson, actualJson);
     }
 
-    [Test]
+    [Fact]
     public void Can_Serialize_Polygon_Feature()
     {
         var coordinates = new List<IPosition>
@@ -126,7 +125,7 @@ public class FeatureTests : TestBase
         JsonAssert.AreEqual(expectedJson, actualJson);
     }
 
-    [Test]
+    [Fact]
     public void Can_Serialize_MultiPolygon_Feature()
     {
         var multiPolygon = new MultiPolygon(new List<Polygon>
@@ -171,7 +170,7 @@ public class FeatureTests : TestBase
         JsonAssert.AreEqual(expectedJson, actualJson);
     }
 
-    [Test]
+    [Fact]
     public void Can_Serialize_Dictionary_Subclass()
     {
         var properties =
@@ -203,7 +202,7 @@ public class FeatureTests : TestBase
         JsonAssert.AreEqual(expectedJson, actualJson);
     }
 
-    [Test]
+    [Fact]
     public void Ctor_Can_Add_Properties_Using_Object()
     {
         var properties = new TestFeatureProperty
@@ -228,20 +227,18 @@ public class FeatureTests : TestBase
 
         Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties, options);
 
-        Assert.IsNotNull(feature.Properties);
-        Assert.IsTrue(feature.Properties.Count > 1);
-        Assert.AreEqual(feature.Properties.Count, 6);
+        Assert.NotNull(feature.Properties);
+        Assert.True(feature.Properties.Count > 1);
+        Assert.Equal(6, feature.Properties.Count);
 
-        Assert.IsNotNull(feature.Options);
-        Assert.IsTrue(feature.Options.Count > 1);
-        Assert.AreEqual(feature.Options.Count, 6);
+        Assert.NotNull(feature.Options);
+        Assert.True(feature.Options.Count > 1);
+        Assert.Equal(6, feature.Options.Count);
     }
 
-    [Test]
+    [Fact]
     public void Ctor_Can_Add_Properties_Using_Object_Inheriting_Dictionary()
     {
-        int expectedProperties = 6;
-
         var properties = new TestFeaturePropertyDictionary()
         {
             BooleanProperty = true,
@@ -254,24 +251,21 @@ public class FeatureTests : TestBase
 
         Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties);
 
-        Assert.IsNotNull(feature.Properties);
-        Assert.IsTrue(feature.Properties.Count > 1);
-        Assert.AreEqual(
-            feature.Properties.Count,
-            expectedProperties,
-            $"Expected: {expectedProperties} Actual: {feature.Properties.Count}");
+        Assert.NotNull(feature.Properties);
+        Assert.True(feature.Properties.Count > 1);
+        Assert.Equal(6, feature.Properties.Count);
     }
 
-    [Test]
+    [Fact]
     public void Ctor_Creates_Properties_Collection_When_Passed_Null_Proper_Object()
     {
         Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), null, null);
 
-        Assert.IsNotNull(feature.Properties);
-        CollectionAssert.IsEmpty(feature.Properties);
+        Assert.NotNull(feature.Properties);
+        Assert.Empty(feature.Properties);
     }
 
-    [Test]
+    [Fact]
     public void Feature_Equals_GetHashCode_Contract_Properties_Of_Objects()
     {
         // order of keys should not matter
@@ -323,7 +317,7 @@ public class FeatureTests : TestBase
         Assert_Are_Equal(left, right);
     }
 
-    [Test]
+    [Fact]
     public void Feature_Equals_GetHashCode_Contract_Dictionary()
     {
         var leftDictionary = GetPropertiesInRandomOrder();
@@ -359,7 +353,7 @@ public class FeatureTests : TestBase
         Assert_Are_Equal(left, right);
     }
 
-    [Test]
+    [Fact]
     public void Serialized_And_Deserialized_Feature_Equals_And_Share_HashCode()
     {
         var geometry = GetGeometry();
@@ -405,45 +399,51 @@ public class FeatureTests : TestBase
         Assert_Are_Equal(left, right); // assert id's + properties doesn't influence comparison and hashcode
     }
 
-    [Test]
+    [Fact]
     public void Feature_Equals_Null_Issue94()
     {
         bool equal1 = true;
         bool equal2 = true;
 
         var feature = new Net.Feature.Feature(new Point(new Position(12, 123)));
-        Assert.DoesNotThrow(() =>
+
+        var exception = Record.Exception(() =>
         {
             equal1 = feature.Equals(null);
             equal2 = feature == null;
         });
 
-        Assert.IsFalse(equal1);
-        Assert.IsFalse(equal2);
+        Assert.Null(exception);
+
+        Assert.False(equal1);
+        Assert.False(equal2);
     }
 
-    [Test]
+    [Fact]
     public void Feature_Null_Instance_Equals_Null_Issue94()
     {
         var equal1 = true;
 
         Net.Feature.Feature feature = null;
-        Assert.DoesNotThrow(() =>
+
+        var exception = Record.Exception(() =>
         {
             equal1 = feature != null;
         });
 
-        Assert.IsFalse(equal1);
+        Assert.Null(exception);
+
+        Assert.False(equal1);
     }
 
-    [Test]
+    [Fact]
     public void Feature_Equals_Itself_Issue94()
     {
         bool equal1 = false;
         bool equal2 = false;
 
         var feature = new Net.Feature.Feature(new Point(new Position(12, 123)));
-        Assert.DoesNotThrow(() =>
+        var exception = Record.Exception(() =>
         {
             #pragma warning disable CS1718 // Comparison made to same variable
             equal1 = feature == feature;
@@ -451,11 +451,13 @@ public class FeatureTests : TestBase
             equal2 = feature.Equals(feature);
         });
 
-        Assert.IsTrue(equal1);
-        Assert.IsTrue(equal2);
+        Assert.Null(exception);
+
+        Assert.True(equal1);
+        Assert.True(equal2);
     }
 
-    [Test]
+    [Fact]
     public void Feature_Equals_Geometry_Null_Issue115()
     {
         bool equal1 = false;
@@ -464,17 +466,19 @@ public class FeatureTests : TestBase
         var feature1 = new Net.Feature.Feature(null);
         var feature2 = new Net.Feature.Feature(new Point(new Position(12, 123)));
 
-        Assert.DoesNotThrow(() =>
+        var exception = Record.Exception(() =>
         {
             equal1 = feature1 == feature2;
             equal2 = feature1.Equals(feature2);
         });
 
-        Assert.IsFalse(equal1);
-        Assert.IsFalse(equal2);
+        Assert.Null(exception);
+
+        Assert.False(equal1);
+        Assert.False(equal2);
     }
 
-    [Test]
+    [Fact]
     public void Feature_Equals_Other_Geometry_Null_Issue115()
     {
         bool equal1 = false;
@@ -483,17 +487,19 @@ public class FeatureTests : TestBase
         var feature1 = new Net.Feature.Feature(new Point(new Position(12, 123)));
         var feature2 = new Net.Feature.Feature(null);
 
-        Assert.DoesNotThrow(() =>
+        var exception = Record.Exception(() =>
         {
             equal1 = feature1 == feature2;
             equal2 = feature1.Equals(feature2);
         });
 
-        Assert.IsFalse(equal1);
-        Assert.IsFalse(equal2);
+        Assert.Null(exception);
+
+        Assert.False(equal1);
+        Assert.False(equal2);
     }
 
-    [Test]
+    [Fact]
     public void Feature_Equals_All_Geometry_Null_Issue115()
     {
         bool equal1 = false;
@@ -502,14 +508,16 @@ public class FeatureTests : TestBase
         var feature1 = new Net.Feature.Feature(null);
         var feature2 = new Net.Feature.Feature(null);
 
-        Assert.DoesNotThrow(() =>
+        var exception = Record.Exception(() =>
         {
             equal1 = feature1 == feature2;
             equal2 = feature1.Equals(feature2);
         });
 
-        Assert.IsTrue(equal1);
-        Assert.IsTrue(equal2);
+        Assert.Null(exception);
+
+        Assert.True(equal1);
+        Assert.True(equal2);
     }
 
     private static IGeometryObject GetGeometry()
@@ -558,36 +566,36 @@ public class FeatureTests : TestBase
 
     private static void Assert_Are_Equal(Net.Feature.Feature left, Net.Feature.Feature right)
     {
-        Assert.AreEqual(left, right);
+        Assert.Equal(left, right);
 
-        Assert.IsTrue(left.Equals(right));
-        Assert.IsTrue(right.Equals(left));
+        Assert.True(left.Equals(right));
+        Assert.True(right.Equals(left));
 
-        Assert.IsTrue(left.Equals(left));
-        Assert.IsTrue(right.Equals(right));
+        Assert.True(left.Equals(left));
+        Assert.True(right.Equals(right));
 
-        Assert.IsTrue(left == right);
-        Assert.IsTrue(right == left);
+        Assert.True(left == right);
+        Assert.True(right == left);
 
-        Assert.IsFalse(left != right);
-        Assert.IsFalse(right != left);
+        Assert.False(left != right);
+        Assert.False(right != left);
 
-        Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+        Assert.Equal(left.GetHashCode(), right.GetHashCode());
     }
 
     private static void Assert_Are_Not_Equal(Net.Feature.Feature left, Net.Feature.Feature right)
     {
-        Assert.AreNotEqual(left, right);
+        Assert.NotEqual(left, right);
 
-        Assert.IsFalse(left.Equals(right));
-        Assert.IsFalse(right.Equals(left));
+        Assert.False(left.Equals(right));
+        Assert.False(right.Equals(left));
 
-        Assert.IsFalse(left == right);
-        Assert.IsFalse(right == left);
+        Assert.False(left == right);
+        Assert.False(right == left);
 
-        Assert.IsTrue(left != right);
-        Assert.IsTrue(right != left);
+        Assert.True(left != right);
+        Assert.True(right != left);
 
-        Assert.AreNotEqual(left.GetHashCode(), right.GetHashCode());
+        Assert.NotEqual(left.GetHashCode(), right.GetHashCode());
     }
 }

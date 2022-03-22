@@ -3,68 +3,67 @@ using System.Linq;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
-using NUnit.Framework;
+using Xunit;
 
 namespace GeoJSON.Net.Tests.Feature;
 
-[TestFixture]
-internal class GenericFeatureTests : TestBase
+public class GenericFeatureTests : TestBase
 {
-    [Test]
+    [Fact]
     public void Can_Deserialize_Point_Feature()
     {
         var json = GetExpectedJson();
 
         var feature = JsonConvert.DeserializeObject<Feature<Point>>(json);
 
-        Assert.IsNotNull(feature);
-        Assert.IsNotNull(feature.Properties);
-        Assert.IsTrue(feature.Properties.Any());
+        Assert.NotNull(feature);
+        Assert.NotNull(feature.Properties);
+        Assert.True(feature.Properties.Any());
 
-        Assert.IsTrue(feature.Properties.ContainsKey("name"));
-        Assert.AreEqual("Dinagat Islands", feature.Properties["name"]);
+        Assert.True(feature.Properties.ContainsKey("name"));
+        Assert.Equal("Dinagat Islands", feature.Properties["name"]);
 
-        Assert.IsNotNull(feature.Options);
-        Assert.IsTrue(feature.Options.Any());
+        Assert.NotNull(feature.Options);
+        Assert.True(feature.Options.Any());
 
-        Assert.IsTrue(feature.Options.ContainsKey("fill"));
-        Assert.AreEqual(true, feature.Options["fill"]);
+        Assert.True(feature.Options.ContainsKey("fill"));
+        Assert.Equal(true, feature.Options["fill"]);
 
-        Assert.AreEqual("test-id", feature.Id);
+        Assert.Equal("test-id", feature.Id);
 
-        Assert.AreEqual(GeoJSONObjectType.Point, feature.Geometry.Type);
-        Assert.AreEqual(125.6, feature.Geometry.Coordinates.Longitude);
-        Assert.AreEqual(10.1, feature.Geometry.Coordinates.Latitude);
+        Assert.Equal(GeoJSONObjectType.Point, feature.Geometry.Type);
+        Assert.Equal(125.6, feature.Geometry.Coordinates.Longitude);
+        Assert.Equal(10.1, feature.Geometry.Coordinates.Latitude);
     }
 
-    [Test]
+    [Fact]
     public void Can_Deserialize_LineString_Feature()
     {
         var json = GetExpectedJson();
 
         var feature = JsonConvert.DeserializeObject<Feature<LineString>>(json);
 
-        Assert.IsNotNull(feature);
-        Assert.IsNotNull(feature.Properties);
-        Assert.IsTrue(feature.Properties.Any());
+        Assert.NotNull(feature);
+        Assert.NotNull(feature.Properties);
+        Assert.True(feature.Properties.Any());
 
-        Assert.IsTrue(feature.Properties.ContainsKey("name"));
-        Assert.AreEqual("Dinagat Islands", feature.Properties["name"]);
+        Assert.True(feature.Properties.ContainsKey("name"));
+        Assert.Equal("Dinagat Islands", feature.Properties["name"]);
 
-        Assert.IsNotNull(feature.Options);
-        Assert.IsTrue(feature.Options.Any());
+        Assert.NotNull(feature.Options);
+        Assert.True(feature.Options.Any());
 
-        Assert.IsTrue(feature.Options.ContainsKey("fill"));
-        Assert.AreEqual(true, feature.Options["fill"]);
+        Assert.True(feature.Options.ContainsKey("fill"));
+        Assert.Equal(true, feature.Options["fill"]);
 
-        Assert.AreEqual("test-id", feature.Id);
+        Assert.Equal("test-id", feature.Id);
 
-        Assert.AreEqual(GeoJSONObjectType.LineString, feature.Geometry.Type);
+        Assert.Equal(GeoJSONObjectType.LineString, feature.Geometry.Type);
 
-        Assert.AreEqual(4, feature.Geometry.Coordinates.Count);
+        Assert.Equal(4, feature.Geometry.Coordinates.Count);
     }
 
-    [Test]
+    [Fact]
     public void Feature_Generic_Equals_Null_Issure94()
     {
         bool equal1 = true;
@@ -84,14 +83,16 @@ internal class GenericFeatureTests : TestBase
 
         var feature = new Feature<Point, Dictionary<string, string>, Dictionary<string, string>>(point, properties, options, "testid");
 
-        Assert.DoesNotThrow(() =>
+        var exception = Record.Exception(() =>
         {
             equal1 = feature == null;
             equal2 = feature.Equals(null);
         });
 
-        Assert.IsFalse(equal1);
-        Assert.IsFalse(equal2);
+        Assert.Null(exception);
+
+        Assert.False(equal1);
+        Assert.False(equal2);
     }
 
     private class TypedFeatureProps
@@ -110,28 +111,28 @@ internal class GenericFeatureTests : TestBase
         public string FillColor { get; set; }
     }
 
-    [Test]
+    [Fact]
     public void Can_Deserialize_Typed_Point_Feature()
     {
         var json = GetExpectedJson();
         var feature = JsonConvert.DeserializeObject<Feature<Point, TypedFeatureProps, TypedFeatureOptions>>(json);
 
-        Assert.IsNotNull(feature);
+        Assert.NotNull(feature);
 
-        Assert.IsNotNull(feature.Properties);
-        Assert.AreEqual(feature.Properties.Name, "Dinagat Islands");
-        Assert.AreEqual(feature.Properties.Value, 4.2);
+        Assert.NotNull(feature.Properties);
+        Assert.Equal("Dinagat Islands", feature.Properties.Name);
+        Assert.Equal(4.2, feature.Properties.Value);
 
-        Assert.IsNotNull(feature.Options);
-        Assert.AreEqual(feature.Options.Fill, true);
-        Assert.AreEqual(feature.Options.FillColor, "#FF00FF");
+        Assert.NotNull(feature.Options);
+        Assert.True(feature.Options.Fill);
+        Assert.Equal("#FF00FF", feature.Options.FillColor);
 
-        Assert.AreEqual(feature.Id, "test-id");
+        Assert.Equal("test-id", feature.Id);
 
-        Assert.AreEqual(feature.Geometry.Type, GeoJSONObjectType.Point);
+        Assert.Equal(GeoJSONObjectType.Point, feature.Geometry.Type);
     }
 
-    [Test]
+    [Fact]
     public void Can_Serialize_Typed_Point_Feature()
     {
         var geometry = new Point(new Position(1, 2));
