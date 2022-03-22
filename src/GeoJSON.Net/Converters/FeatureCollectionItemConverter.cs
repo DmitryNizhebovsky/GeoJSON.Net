@@ -17,16 +17,14 @@ internal class FeatureCollectionItemConverter : JsonConverter
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
-        switch (reader.TokenType)
+        if (reader.TokenType == JsonToken.StartArray)
         {
-            case JsonToken.StartArray:
-                var values = JArray.Load(reader);
-                var features = new List<IFeatureCollectionItem<IGeometryObject>>(
-                    values.Cast<JObject>().Select(ReadGeoJson).ToArray());
-                return features;
+            var values = JArray.Load(reader);
+            return new List<IFeatureCollectionItem<IGeometryObject>>(
+                values.Cast<JObject>().Select(ReadGeoJson).ToArray());
         }
 
-        throw new JsonReaderException("expected array token but received " + reader.TokenType);
+        throw new JsonReaderException("Expected array token but received " + reader.TokenType);
     }
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
