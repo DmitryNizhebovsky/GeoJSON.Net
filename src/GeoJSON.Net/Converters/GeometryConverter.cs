@@ -102,6 +102,7 @@ public class GeometryConverter : JsonConverter
             GeoJSONObjectType.MultiLineString => value.ToObject<MultiLineString>(),
             GeoJSONObjectType.Polygon => value.ToObject<Polygon>(),
             GeoJSONObjectType.MultiPolygon => value.ToObject<MultiPolygon>(),
+            GeoJSONObjectType.Circle => value.ToObject<Circle>(),
             GeoJSONObjectType.GeometryCollection => value.ToObject<GeometryCollection>(),
             _ => throw new NotSupportedException("Feature and FeatureCollection types are Feature objects and not Geometry objects")
         };

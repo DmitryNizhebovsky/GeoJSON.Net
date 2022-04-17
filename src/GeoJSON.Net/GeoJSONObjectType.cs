@@ -82,5 +82,10 @@ public enum GeoJSONObjectType
     /// <summary>
     /// Defines the Cluster type.
     /// </summary>
-    Cluster
+    Cluster,
+
+    /// <summary>
+    /// Defines the Circle type.
+    /// </summary>
+    Circle
 }
