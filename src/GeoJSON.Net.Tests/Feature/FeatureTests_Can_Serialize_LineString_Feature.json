@@ -1,4 +1,5 @@
 ﻿{
+  "id": "id-42",
   "geometry": {
     "coordinates": [
       [ 4.8892593383789062, 52.370725881211314 ],
@@ -8,7 +9,11 @@
     ],
     "type": "LineString"
   },
-  "properties": {},
-  "options":  {},
+  "properties": {
+    "Name": "Foo"
+  },
+  "options": {
+    "Foo":  "Bar"
+  },
   "type": "Feature"
 }

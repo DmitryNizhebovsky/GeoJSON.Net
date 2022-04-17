@@ -1,4 +1,5 @@
 ﻿{
+  "id": "id-42",
   "geometry": {
     "coordinates": [
       [
@@ -29,7 +30,11 @@
     ],
     "type": "MultiPolygon"
   },
-  "properties": {},
-  "options": {},
+  "properties": {
+    "Name": "Foo"
+  },
+  "options": {
+    "Foo": "Bar"
+  },
   "type": "Feature"
 }

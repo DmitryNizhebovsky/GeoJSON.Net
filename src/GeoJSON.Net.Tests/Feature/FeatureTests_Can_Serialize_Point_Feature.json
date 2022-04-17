@@ -1,9 +1,14 @@
 ﻿{
+  "id": "id-42",
   "geometry": {
     "coordinates": [ 2.0, 1.0 ],
     "type": "Point"
   },
-  "properties": {},
-  "options": {},
+  "properties": {
+    "Name": "Foo"
+  },
+  "options": {
+    "Foo": "Bar"
+  },
   "type": "Feature"
 }

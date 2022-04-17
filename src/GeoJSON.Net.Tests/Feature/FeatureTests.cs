@@ -56,8 +56,11 @@ public class FeatureTests : TestBase
         };
 
         var geometry = new LineString(coordinates[0]);
+        var properties = new Dictionary<string, object> { { "Name", "Foo" } };
+        var options = new Dictionary<string, object> { { "Foo", "Bar" } };
+        var id = "id-42";
 
-        var actualJson = JsonConvert.SerializeObject(new Net.Feature.Feature(geometry));
+        var actualJson = JsonConvert.SerializeObject(new Net.Feature.Feature(geometry, properties, options, id));
 
         var expectedJson = GetExpectedJson();
 
@@ -85,9 +88,13 @@ public class FeatureTests : TestBase
             })
         });
 
+        var properties = new Dictionary<string, object> { { "Name", "Foo" } };
+        var options = new Dictionary<string, object> { { "Foo", "Bar" } };
+        var id = "id-42";
+
         var expectedJson = GetExpectedJson();
 
-        var actualJson = JsonConvert.SerializeObject(new Net.Feature.Feature(geometry));
+        var actualJson = JsonConvert.SerializeObject(new Net.Feature.Feature(geometry, properties, options, id));
 
         JsonAssert.AreEqual(expectedJson, actualJson);
     }
@@ -96,9 +103,13 @@ public class FeatureTests : TestBase
     public void Can_Serialize_Point_Feature()
     {
         var geometry = new Point(new Position(1, 2));
+        var properties = new Dictionary<string, object> { { "Name", "Foo" } };
+        var options = new Dictionary<string, object> { { "Foo", "Bar" } };
+        var id = "id-42";
+
         var expectedJson = GetExpectedJson();
 
-        var actualJson = JsonConvert.SerializeObject(new Net.Feature.Feature(geometry));
+        var actualJson = JsonConvert.SerializeObject(new Net.Feature.Feature(geometry, properties, options, id));
 
         JsonAssert.AreEqual(expectedJson, actualJson);
     }
@@ -117,7 +128,8 @@ public class FeatureTests : TestBase
         var polygon = new Polygon(new List<LineString> { new LineString(coordinates) });
         var properties = new Dictionary<string, object> { { "Name", "Foo" } };
         var options = new Dictionary<string, object> { { "Foo", "Bar" } };
-        var feature = new Net.Feature.Feature(polygon, properties, options);
+        var id = "id-42";
+        var feature = new Net.Feature.Feature(polygon, properties, options, id);
 
         var expectedJson = GetExpectedJson();
         var actualJson = JsonConvert.SerializeObject(feature);
@@ -162,7 +174,11 @@ public class FeatureTests : TestBase
             })
         });
 
-        var feature = new Net.Feature.Feature(multiPolygon);
+        var properties = new Dictionary<string, object> { { "Name", "Foo" } };
+        var options = new Dictionary<string, object> { { "Foo", "Bar" } };
+        var id = "id-42";
+
+        var feature = new Net.Feature.Feature(multiPolygon, properties, options, id);
 
         var expectedJson = GetExpectedJson();
         var actualJson = JsonConvert.SerializeObject(feature);
@@ -173,6 +189,7 @@ public class FeatureTests : TestBase
     [Fact]
     public void Can_Serialize_Dictionary_Subclass()
     {
+        var geometry = new Point(new Position(10, 10));
         var properties =
             new TestFeaturePropertyDictionary()
             {
@@ -193,7 +210,9 @@ public class FeatureTests : TestBase
                 StringProperty = "Hello, YandexMap !"
             };
 
-        Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties, options);
+        var id = "id-42";
+
+        var feature = new Net.Feature.Feature(geometry, properties, options, id);
 
         var expectedJson = GetExpectedJson();
         var actualJson = JsonConvert.SerializeObject(feature);
@@ -205,6 +224,7 @@ public class FeatureTests : TestBase
     [Fact]
     public void Ctor_Can_Add_Properties_Using_Object()
     {
+        var geometry = new Point(new Position(10, 10));
         var properties = new TestFeatureProperty
         {
             BooleanProperty = true,
@@ -225,7 +245,9 @@ public class FeatureTests : TestBase
             StringProperty = "Hello, YandexMap !"
         };
 
-        Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties, options);
+        var id = "id-42";
+
+        var feature = new Net.Feature.Feature(geometry, properties, options, id);
 
         Assert.NotNull(feature.Properties);
         Assert.True(feature.Properties.Count > 1);
@@ -239,6 +261,8 @@ public class FeatureTests : TestBase
     [Fact]
     public void Ctor_Can_Add_Properties_Using_Object_Inheriting_Dictionary()
     {
+        var id = "id-42";
+        var geometry = new Point(new Position(10, 10));
         var properties = new TestFeaturePropertyDictionary()
         {
             BooleanProperty = true,
@@ -249,7 +273,17 @@ public class FeatureTests : TestBase
             StringProperty = "Hello, GeoJSON !"
         };
 
-        Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties);
+        var options = new TestFeaturePropertyDictionary()
+        {
+            BooleanProperty = false,
+            DateTimeProperty = DateTime.Now,
+            DoubleProperty = 5.4321d,
+            EnumProperty = TestFeatureEnum.Value2,
+            IntProperty = 42,
+            StringProperty = "Hello, YandexMap !"
+        };
+
+        var feature = new Net.Feature.Feature(geometry, properties, null, id);
 
         Assert.NotNull(feature.Properties);
         Assert.True(feature.Properties.Count > 1);
@@ -259,15 +293,49 @@ public class FeatureTests : TestBase
     [Fact]
     public void Ctor_Creates_Properties_Collection_When_Passed_Null_Proper_Object()
     {
-        Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), null, null);
+        var id = "id-42";
+        var geometry = new Point(new Position(10, 10));
+        var options = new TestFeatureProperty()
+        {
+            BooleanProperty = false,
+            DateTimeProperty = DateTime.Now,
+            DoubleProperty = 5.4321d,
+            EnumProperty = TestFeatureEnum.Value2,
+            IntProperty = 42,
+            StringProperty = "Hello, YandexMap !"
+        };
+
+        var feature = new Net.Feature.Feature(geometry, null, options, id);
 
         Assert.NotNull(feature.Properties);
         Assert.Empty(feature.Properties);
     }
 
     [Fact]
+    public void Ctor_Creates_Properties_Collection_When_Passed_Null_Options_Object()
+    {
+        var geometry = new Point(new Position(10, 10));
+        var properties = new TestFeaturePropertyDictionary()
+        {
+            BooleanProperty = true,
+            DateTimeProperty = DateTime.Now,
+            DoubleProperty = 1.2345d,
+            EnumProperty = TestFeatureEnum.Value1,
+            IntProperty = -1,
+            StringProperty = "Hello, GeoJSON !"
+        };
+        var id = "id-42";
+
+        var feature = new Net.Feature.Feature(geometry, properties, null, id);
+
+        Assert.NotNull(feature.Options);
+        Assert.Empty(feature.Options);
+    }
+
+    [Fact]
     public void Feature_Equals_GetHashCode_Contract_Properties_Of_Objects()
     {
+        var id = "11-22";
         // order of keys should not matter
 
         var leftProp = new TestFeatureProperty
@@ -290,7 +358,7 @@ public class FeatureTests : TestBase
             DateTimeProperty = DateTime.Now
         };
 
-        var left = new Net.Feature.Feature(new Point(new Position(10, 10)), leftProp, leftOptions);
+        var left = new Net.Feature.Feature(new Point(new Position(10, 10)), leftProp, leftOptions, id);
 
         var rightProp = new TestFeatureProperty
         {
@@ -312,7 +380,7 @@ public class FeatureTests : TestBase
             BooleanProperty = false
         };
 
-        var right = new Net.Feature.Feature(new Point(new Position(10, 10)), rightProp, rightOptions);
+        var right = new Net.Feature.Feature(new Point(new Position(10, 10)), rightProp, rightOptions, id);
 
         Assert_Are_Equal(left, right);
     }
@@ -358,21 +426,21 @@ public class FeatureTests : TestBase
     {
         var geometry = GetGeometry();
 
-        var leftFeature = new Net.Feature.Feature(geometry);
+        var leftFeature = new Net.Feature.Feature(geometry, null, null, null);
         var leftJson = JsonConvert.SerializeObject(leftFeature);
         var left = JsonConvert.DeserializeObject<Net.Feature.Feature>(leftJson);
 
-        var rightFeature = new Net.Feature.Feature(geometry);
+        var rightFeature = new Net.Feature.Feature(geometry, null, null, null);
         var rightJson = JsonConvert.SerializeObject(rightFeature);
         var right = JsonConvert.DeserializeObject<Net.Feature.Feature>(rightJson);
 
         Assert_Are_Equal(left, right);
 
-        leftFeature = new Net.Feature.Feature(geometry, GetPropertiesInRandomOrder());
+        leftFeature = new Net.Feature.Feature(geometry, GetPropertiesInRandomOrder(), null, null);
         leftJson = JsonConvert.SerializeObject(leftFeature);
         left = JsonConvert.DeserializeObject<Net.Feature.Feature>(leftJson);
 
-        rightFeature = new Net.Feature.Feature(geometry, GetPropertiesInRandomOrder());
+        rightFeature = new Net.Feature.Feature(geometry, GetPropertiesInRandomOrder(), null, null);
         rightJson = JsonConvert.SerializeObject(rightFeature);
         right = JsonConvert.DeserializeObject<Net.Feature.Feature>(rightJson);
 
@@ -405,7 +473,7 @@ public class FeatureTests : TestBase
         bool equal1 = true;
         bool equal2 = true;
 
-        var feature = new Net.Feature.Feature(new Point(new Position(12, 123)));
+        var feature = new Net.Feature.Feature(new Point(new Position(12, 123)), null, null, null);
 
         var exception = Record.Exception(() =>
         {
@@ -442,7 +510,7 @@ public class FeatureTests : TestBase
         bool equal1 = false;
         bool equal2 = false;
 
-        var feature = new Net.Feature.Feature(new Point(new Position(12, 123)));
+        var feature = new Net.Feature.Feature(new Point(new Position(12, 123)), null, null, null);
         var exception = Record.Exception(() =>
         {
             #pragma warning disable CS1718 // Comparison made to same variable
@@ -463,8 +531,8 @@ public class FeatureTests : TestBase
         bool equal1 = false;
         bool equal2 = false;
 
-        var feature1 = new Net.Feature.Feature(null);
-        var feature2 = new Net.Feature.Feature(new Point(new Position(12, 123)));
+        var feature1 = new Net.Feature.Feature(null, null, null, null);
+        var feature2 = new Net.Feature.Feature(new Point(new Position(12, 123)), null, null, null);
 
         var exception = Record.Exception(() =>
         {
@@ -484,8 +552,8 @@ public class FeatureTests : TestBase
         bool equal1 = false;
         bool equal2 = false;
 
-        var feature1 = new Net.Feature.Feature(new Point(new Position(12, 123)));
-        var feature2 = new Net.Feature.Feature(null);
+        var feature1 = new Net.Feature.Feature(new Point(new Position(12, 123)), null, null, null);
+        var feature2 = new Net.Feature.Feature(null, null, null, null);
 
         var exception = Record.Exception(() =>
         {
@@ -505,8 +573,8 @@ public class FeatureTests : TestBase
         bool equal1 = false;
         bool equal2 = false;
 
-        var feature1 = new Net.Feature.Feature(null);
-        var feature2 = new Net.Feature.Feature(null);
+        var feature1 = new Net.Feature.Feature(null, null, null, null);
+        var feature2 = new Net.Feature.Feature(null, null, null, null);
 
         var exception = Record.Exception(() =>
         {
