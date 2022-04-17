@@ -21,7 +21,7 @@ public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IFeatureColle
     where TGeometry : IGeometryObject
 {
     [JsonConstructor]
-    public Feature(TGeometry geometry, TProps properties, TOptions options, string id = null)
+    public Feature(TGeometry geometry, TProps properties, TOptions options, string id)
     {
         Geometry = geometry;
         Properties = properties;
@@ -69,10 +69,7 @@ public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IFeatureColle
 
     public override bool Equals(object obj)
     {
-        if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
-        return Equals((Feature<TGeometry, TProps, TOptions>) obj);
+        return Equals(obj as Feature<TGeometry, TProps, TOptions>);
     }
 
     public override int GetHashCode()
@@ -102,12 +99,12 @@ public class Feature<TGeometry, TProps, TOptions> : GeoJSONObject, IFeatureColle
 public class Feature : Feature<IGeometryObject>
 {
     [JsonConstructor]
-    public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, IDictionary<string, object> options = null, string id = null) 
+    public Feature(IGeometryObject geometry, IDictionary<string, object> properties, IDictionary<string, object> options, string id) 
         : base(geometry, properties, options, id)
     {
     }
 
-    public Feature(IGeometryObject geometry, object properties, object options, string id = null) 
+    public Feature(IGeometryObject geometry, object properties, object options, string id) 
         : base(geometry, properties, options, id)
     {
     }
@@ -128,7 +125,7 @@ public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>
     /// <param name="properties">The properties.</param>
     /// <param name="id">The (optional) identifier.</param>
     [JsonConstructor]
-    public Feature(TGeometry geometry, IDictionary<string, object> properties = null, IDictionary<string, object> options = null, string id = null)
+    public Feature(TGeometry geometry, IDictionary<string, object> properties, IDictionary<string, object> options, string id)
         : base(geometry, properties ?? new Dictionary<string, object>(), options ?? new Dictionary<string, object>(), id)
     {
     }
@@ -142,7 +139,7 @@ public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>
     /// properties
     /// </param>
     /// <param name="id">The (optional) identifier.</param>
-    public Feature(TGeometry geometry, object properties, object options, string id = null)
+    public Feature(TGeometry geometry, object properties, object options, string id)
         : this(geometry, GetDictionaryOfPublicProperties(properties), GetDictionaryOfPublicProperties(options), id)
     {
     }
@@ -153,6 +150,12 @@ public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>
         {
             return new Dictionary<string, object>();
         }
+        var a = properties
+            .GetType()
+            .GetTypeInfo()
+            .DeclaredProperties
+            .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
+            .ToList();
 
         return properties
             .GetType()
@@ -189,9 +192,7 @@ public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>
 
     public override bool Equals(object obj)
     {
-        if (obj is null) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        return obj.GetType() == GetType() && Equals((Feature<TGeometry>) obj);
+        return Equals(obj as Feature<TGeometry>);
     }
 
     public override int GetHashCode()
