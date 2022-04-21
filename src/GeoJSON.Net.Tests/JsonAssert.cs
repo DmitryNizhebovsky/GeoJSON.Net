@@ -26,6 +26,22 @@ namespace GeoJSON.Net.Tests
         }
 
         /// <summary>
+        ///     Asserts that the json strings are equal.
+        /// </summary>
+        /// <remarks>
+        ///     Parses each json string into a <see cref="JArray" />
+        ///     and then serializes each back to a json string for comparison.
+        /// </remarks>
+        /// <param name="expectJson">The expect json.</param>
+        /// <param name="actualJson">The actual json.</param>
+        public static void AreEqualArray(string expectJson, string actualJson)
+        {
+            Assert.Equal(
+                JArray.Parse(expectJson).ToString(),
+                JArray.Parse(actualJson).ToString());
+        }
+
+        /// <summary>
         ///     Asserts that <paramref name="actualJson" /> contains <paramref name="expectedJson" />
         /// </summary>
         /// <param name="expectedJson">The expected json.</param>

@@ -167,7 +167,7 @@ public class FeatureCollectionTests : TestBase
         return new Net.Feature.Feature(geom, props, options, id);
     }
 
-    private static Cluster CreateCluster()
+    private static Net.Feature.Cluster CreateCluster()
     {
         var geom = new LineString(new[]
             {
@@ -178,10 +178,10 @@ public class FeatureCollectionTests : TestBase
         var props = FeatureTests.GetPropertiesInRandomOrder();
         var options = FeatureTests.GetPropertiesInRandomOrder();
         var number = 42;
-        var bbox = new BoundingBox(BoundingBoxType.FromBottomLeftTopRight, new Position(1, 2), new Position(3, 4));
+        var bbox = new Net.Geometry.BoundingBox(BoundingBoxType.FromBottomLeftTopRight, new Position(1, 2), new Position(3, 4));
         var id = Guid.NewGuid().ToString();
 
-        return new Cluster(geom, props, options, number, bbox, id);
+        return new Net.Feature.Cluster(geom, props, options, number, bbox, id);
     }
 
     private static void Assert_Are_Equal(FeatureCollection left, FeatureCollection right)

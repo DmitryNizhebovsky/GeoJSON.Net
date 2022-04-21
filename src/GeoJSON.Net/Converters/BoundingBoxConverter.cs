@@ -32,13 +32,13 @@ internal class BoundingBoxConverter : JsonConverter
             writer.WriteStartArray();
 
             writer.WriteStartArray();
-            writer.WriteValue(bbox.Min.Longitude);
-            writer.WriteValue(bbox.Min.Latitude);
+            writer.WriteValue(bbox.From.Longitude);
+            writer.WriteValue(bbox.From.Latitude);
             writer.WriteEndArray();
 
             writer.WriteStartArray();
-            writer.WriteValue(bbox.Max.Longitude);
-            writer.WriteValue(bbox.Max.Latitude);
+            writer.WriteValue(bbox.To.Longitude);
+            writer.WriteValue(bbox.To.Latitude);
             writer.WriteEndArray();
 
             writer.WriteEndArray();

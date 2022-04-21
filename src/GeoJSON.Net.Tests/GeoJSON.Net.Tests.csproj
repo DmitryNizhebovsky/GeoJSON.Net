@@ -22,6 +22,12 @@
 		<None Update="Feature\*.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Cluster\*.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="BoundingBox\*.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Geometry\*.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

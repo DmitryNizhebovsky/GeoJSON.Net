@@ -1,0 +1,20 @@
+﻿{
+	"id": "test-id",
+	"type": "Cluster",
+	"geometry": {
+		"type": "Circle",
+		"radius": 48.0,
+		"coordinates": [ 37.623422, 55.771145 ]
+	},
+	"properties": {
+		"Name": "Foo"
+	},
+	"options": {
+		"Foo": "Bar"
+	},
+	"number": 42,
+	"bbox": [
+		[ 37.344074, 55.708352 ],
+		[ 37.670746, 55.801956 ]
+	]
+}

@@ -8,36 +8,37 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Geometry;
 
 /// <summary>
-/// A bounding rectangle described by the positions of two opposite corners top left and bottom right or bottom left and top right.
+/// A bounding rectangle described by the positions of two opposite corners.
 /// </summary>
 [JsonConverter(typeof(BoundingBoxConverter))]
 public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBox>
 {
     /// <summary>
-    /// The min.
+    /// The from.
     /// </summary>
-    public Position Min { get; }
+    public Position From { get; private set; }
 
     /// <summary>
-    /// The max.
+    /// The to.
     /// </summary>
-    public Position Max { get; }
+    public Position To { get; private set; }
 
     /// <summary>
     /// Specifies how the bounding rectangle is defined.
     /// </summary>
-    public BoundingBoxType BoundingBoxType { get; }
+    public BoundingBoxType BoundingBoxType { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BoundingBox" /> class.
     /// </summary>
-    /// <param name="min">The min.</param>
-    /// <param name="max">The max.</param>
-    public BoundingBox(BoundingBoxType boundingBoxType, Position min, Position max)
+    /// <param name="boundingBoxType">Specifies how the bounding rectangle is defined.</param>
+    /// <param name="from">The from.</param>
+    /// <param name="to">The to.</param>
+    public BoundingBox(BoundingBoxType boundingBoxType, Position from, Position to)
     {
         BoundingBoxType = boundingBoxType;
-        Min = min;
-        Max = max;
+        From = from;
+        To = to;
     }
 
     /// <summary>
@@ -80,6 +81,18 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
         return true;
     }
 
+    public void ConvertBoundingBoxTypeTo(BoundingBoxType newType)
+    {
+        if (BoundingBoxType == newType)
+            return;
+
+        BoundingBoxType = newType;
+
+        var from = From;
+        From = new Position(To.Latitude, from.Longitude);
+        To = new Position(from.Latitude, To.Longitude);
+    }
+
     /// <summary>
     /// Returns a <see cref="string" /> that represents this instance.
     /// </summary>
@@ -89,7 +102,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     public override string ToString()
     {
         return string.Format(CultureInfo.InvariantCulture, "BBOX ({0}, {1}, {2}, {3})",
-            Min.Latitude, Min.Longitude, Max.Latitude, Max.Longitude);
+            From.Latitude, From.Longitude, To.Latitude, To.Longitude);
     }
 
     #region IEqualityComparer, IEquatable
@@ -99,9 +112,8 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     /// </summary>
     public static bool operator ==(BoundingBox left, BoundingBox right)
     {
-        return left.Max == right.Max
-            && left.Min == right.Min
-            && left.BoundingBoxType == right.BoundingBoxType;
+        return left.From == right.From
+            && left.To == right.To;
     }
 
     /// <summary>
@@ -141,7 +153,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
     /// </summary>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Max, Min, BoundingBoxType);
+        return HashCode.Combine(From, To, BoundingBoxType);
     }
 
     /// <summary>
@@ -158,7 +170,6 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
 
     private static BoundingBox BuildBoundingBox(BoundingBoxType bboxType, CoordinatesFormat coordinatesFormat, double[] coordinates)
     {
-        BoundingBox result = null;
         Position first = Position.Zero;
         Position second = Position.Zero;
 
@@ -175,21 +186,7 @@ public class BoundingBox : IEqualityComparer<BoundingBox>, IEquatable<BoundingBo
                 break;
         }
 
-        switch (bboxType)
-        {
-            case BoundingBoxType.FromTopLeftBottomRight:
-                result = new BoundingBox(bboxType, first, second);
-                break;
-
-            case BoundingBoxType.FromBottomLeftTopRight:
-                var topLeft = new Position(second.Latitude, first.Longitude);
-                var bottomRight = new Position(first.Latitude, second.Longitude);
-
-                result = new BoundingBox(bboxType, topLeft, bottomRight);
-                break;
-        }
-
-        return result;
+        return new BoundingBox(bboxType, first, second);
     }
 
     private static bool TryParseWktString(string wkt, out double[] result)
